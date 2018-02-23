@@ -7,10 +7,9 @@ import {
     Text
 } from 'react-native';
 import { log, logWarm, logErr } from '../utils/log'
+import request from '../utils/request'
 
-log("测试信息")
-logWarm("测试警告")
-logErr("测试错误")
+request.get(`/banner/findBannerAndQuickList.do?categoryId=`);
 
 export default class extends React.Component {
     render() {
@@ -18,4 +17,5 @@ export default class extends React.Component {
             <Text>这是首页</Text>
         </View>
     }
+
 }
