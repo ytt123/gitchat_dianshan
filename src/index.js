@@ -17,7 +17,7 @@ import My from './home/my'
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
     tab: {
-        height: 40,
+        height: 45,
         backgroundColor: '#fbfafc',
         borderTopColor: '#efefef'
     },

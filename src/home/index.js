@@ -6,6 +6,11 @@ import {
     View,
     Text
 } from 'react-native';
+import { log, logWarm, logErr } from '../utils/log'
+
+log("测试信息")
+logWarm("测试警告")
+logErr("测试错误")
 
 export default class extends React.Component {
     render() {
