@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import Pages from './src';
 //启动
-AppRegistry.registerComponent('anxintao', () => App);
+AppRegistry.registerComponent('anxintao', () => Pages);
