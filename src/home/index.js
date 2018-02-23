@@ -8,14 +8,12 @@ import {
 } from 'react-native';
 import { log, logWarm, logErr } from '../utils/log'
 import request from '../utils/request'
-
-request.get(`/banner/findBannerAndQuickList.do?categoryId=`);
+import px from '../utils/px'
 
 export default class extends React.Component {
     render() {
-        return <View style={{ marginTop: 200 }}>
+        return <View style={{ marginTop: px(500) }}>
             <Text>这是首页</Text>
         </View>
     }
-
 }
