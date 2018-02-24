@@ -8,7 +8,8 @@ import {
     Dimensions,
     TouchableWithoutFeedback,
     ImageBackground,
-    Image
+    Image,
+    FlatList
 } from 'react-native';
 import { log, logWarm, logErr } from '../utils/log'
 import request from '../utils/request'
@@ -16,6 +17,7 @@ import px from '../utils/px'
 import Swiper from 'react-native-swiper'
 import toast from '../utils/toast'
 // import FastImage from 'react-native-fast-image'
+import Modules from './floor_modules'
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -144,6 +146,8 @@ const bannerStyle = StyleSheet.create({
     },
 })
 
+
+
 export default class extends React.Component {
     constructor(props) {
         super(props);
@@ -155,11 +159,40 @@ export default class extends React.Component {
         return <View style={{ flex: 1 }}>
             <View style={styles.pageView}>
                 <MyBanner />
+                <Modules
+                    navigation={this.props.navigation}
+                    goOtherPage={this.goOtherPage.bind(this)} />
+                <View style={{
+                    height: px(100),
+                    backgroundColor: '#f2f2f2',
+                    paddingLeft: px(20)
+                }}>
+                    <Image
+                        style={{
+                            height: px(100),
+                            width: px(280)
+                        }}
+                        source={{ uri: require('../images/index-title') }}
+                    />
+                </View>
             </View>
         </View>
     }
     async componentDidMount() {
 
+    }
+    goOtherPage(item) {
+        if (item.urlType == "sku" && item.prodId) {
+            this.props.navigation.navigate('DetailPage', {
+                id: item.prodId
+            });
+        }
+        if (item.urlType == "h5") {
+            this.props.navigation.navigate('HtmlViewPage', {
+                webPath: item.urlTypeValue,
+                img: item.imageUrl
+            });
+        }
     }
 }
 
