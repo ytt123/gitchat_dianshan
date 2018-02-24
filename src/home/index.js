@@ -69,6 +69,7 @@ class MyBanner extends React.Component {
             </View>}
         </View>
     }
+    //渲染单行
     renderRow = (item) => {
         if (item === undefined) return null
         return <Image resizeMode="contain" resizeMethod="scale"
@@ -161,7 +162,7 @@ function spliceNum(price) {
     return [p_int, p_float]
 }
 
-
+//单个商品组件
 class GoodItem extends React.Component {
     render() {
         const { index, goods } = this.props
@@ -263,6 +264,7 @@ class GoodItem extends React.Component {
             </View>
         )
     }
+    //跳转商品详情页
     getDetail() {
         this.props.navigation.navigate('DetailPage', {
             id: this.props.goods.sku ? '' : this.props.goods.id,
@@ -482,7 +484,8 @@ const goodStyles = StyleSheet.create({
     },
 });
 
-class SearchHeader extends React.Component{
+//顶部搜索条组件
+class SearchHeader extends React.Component {
     render() {
         return <View style={styleSearchBar.header}>
             <TouchableOpacity activeOpacity={0.9} onPress={() => this.shareTo()}>
@@ -504,11 +507,12 @@ class SearchHeader extends React.Component{
             </TouchableWithoutFeedback>
         </View>
     }
-   
-    goSearch(){
+    //跳转搜索页
+    goSearch() {
         this.props.navigation.navigate('SearchPage', {});
     }
-    shareTo(){}
+    //TODO:分享
+    shareTo() { }
 }
 
 const styleSearchBar = StyleSheet.create({
@@ -649,6 +653,7 @@ export default class extends React.Component {
     async componentDidMount() {
         this.loadShop();
     }
+    //刷新方法
     async refresh() {
         this.isEnd = false;
         this.setState({
@@ -664,6 +669,7 @@ export default class extends React.Component {
             });
         }
     }
+    //加载商品第一页
     async loadShop() {
         this.start = 0;
         try {
@@ -694,6 +700,7 @@ export default class extends React.Component {
         }
         this.loading = false;
     }
+    //加载商品其他页
     async nextPage() {
         if (this.loading || this.isEnd) return;
         this.loading = true;
@@ -723,10 +730,12 @@ export default class extends React.Component {
             this.loading = false;
         }
     }
+    //TODO:滚动监听
     _onScroll() {
 
     }
-    addCart(){}
+    //TODO:加入购物车
+    addCart() { }
     /**
      * 跳转到其他页面
      * @param {*} item 
