@@ -100,6 +100,13 @@ class MyBanner extends React.Component {
     onPressRow(e) {
         this.getDetail(e.contextType, e.context, e.title, e.showImg)
     }
+    /**
+     * 跳转到其他页面
+     * @param {*} type 
+     * @param {*} context 
+     * @param {*} title 
+     * @param {*} shareImg 
+     */
     getDetail(type, context, title, shareImg) {
         type == 1 && this.props.navigation.navigate('DetailPage', {
             sku: context
@@ -152,35 +159,68 @@ export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loadText: "加载中...",
+            list: [],
+            refreshing: false, //列表刷新用到的变量
         }
     }
 
     render() {
         return <View style={{ flex: 1 }}>
             <View style={styles.pageView}>
-                <MyBanner />
-                <Modules
-                    navigation={this.props.navigation}
-                    goOtherPage={this.goOtherPage.bind(this)} />
-                <View style={{
-                    height: px(100),
-                    backgroundColor: '#f2f2f2',
-                    paddingLeft: px(20)
-                }}>
-                    <Image
-                        style={{
+                <FlatList ref="flatlist"
+                    refreshing={this.state.refreshing}
+                    numColumns={2}//2列
+                    onRefresh={() => this.refresh()}//刷新调用的方法
+                    onEndReached={() => this.nextPage()}//拉倒底部加载下一页
+                    ListHeaderComponent={<View style={{ backgroundColor: "#fff" }}>
+                        <MyBanner />
+                        <Modules
+                            navigation={this.props.navigation}
+                            goOtherPage={this.goOtherPage.bind(this)} />
+                        <View style={{
                             height: px(100),
-                            width: px(280)
-                        }}
-                        source={{ uri: require('../images/index-title') }}
-                    />
-                </View>
+                            backgroundColor: '#f2f2f2',
+                            paddingLeft: px(20)
+                        }}>
+                            <Image
+                                style={{
+                                    height: px(100),
+                                    width: px(280)
+                                }}
+                                source={{ uri: require('../images/index-title') }}
+                            />
+                        </View>
+                    </View>}
+                    renderItem={() => { }}
+                    ListFooterComponent={<View>
+                        <Text style={styles.loading}>{this.state.loadText}</Text>
+                    </View>}
+                    onScroll={(e) => this._onScroll(e.nativeEvent)}
+                    scrollEventThrottle={1}
+                    keyExtractor={(goods) => goods.id}
+                    data={this.state.list}
+                />
+
             </View>
         </View>
     }
     async componentDidMount() {
 
     }
+    refresh() {
+
+    }
+    nextPage() {
+
+    }
+    _onScroll() {
+
+    }
+    /**
+     * 跳转到其他页面
+     * @param {*} item 
+     */
     goOtherPage(item) {
         if (item.urlType == "sku" && item.prodId) {
             this.props.navigation.navigate('DetailPage', {
@@ -200,5 +240,10 @@ const styles = StyleSheet.create({
     pageView: {
         flex: 1,
         width: deviceWidth,
+    },
+    loading: {
+        textAlign: 'center',
+        fontSize: px(28),
+        color: "#ccc"
     },
 })
