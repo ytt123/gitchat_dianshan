@@ -41,7 +41,7 @@ export default class extends React.Component {
         this.sku = this.props.navigation.state.params.sku;
     }
     render() {
-        return <View>
+        return <View style={{flex:1}}>
             <Header navigation={this.props.navigation} title="详情页" />
             <ScrollView>
                 <View style={styles.goodsInfo}>
@@ -196,11 +196,47 @@ export default class extends React.Component {
                                     4.您在本（公司）网站上购买的保税区发货的境外商品时，自动视为由达令家代您向海关进行申报和代收代缴税费。
                                         </Text>
                             </View>
-                            <View style={{height:px(40)}}></View>
+                            <View style={{ height: px(40) }}></View>
                         </View>
                     }
                 </View>
             </ScrollView>
+            <View style={styles.footer}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => this.goCart()}>
+                    <View style={styles.footerCart}>
+                        <Image
+                            source={{ uri: require('../images/icon-detail-cart') }}
+                            style={{ width: px(46), height: px(39) }}>
+                        </Image>
+                        <Text allowFontScaling={false} style={styles.footerCartTxt}>
+                            {this.state.cartNum}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                {this.state.limitStock == 0
+                    ? <TouchableOpacity>
+                        <View style={[styles.footerBuy, styles.footerBuy1, { width: px(620) }]}>
+                            <Text allowFontScaling={false} style={[styles.footerBuyTxt, styles.footerBuy1Txt]}>
+                                已抢光
+                                </Text>
+                        </View>
+                    </TouchableOpacity>
+                    : <TouchableOpacity activeOpacity={0.8} onPress={() => this.buy()}>
+                        <View style={[styles.footerBuy, { width: px(310) }]}>
+                            <Text allowFontScaling={false} style={styles.footerBuyTxt}>
+                                立即购买
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                }
+                <TouchableOpacity activeOpacity={0.8} onPress={() => this.sharePage()}>
+                    <View style={styles.footerShare}>
+                        <Text allowFontScaling={false} style={styles.footerShareTxt}>
+                            分享商品
+                            </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         </View>
     }
     componentDidMount() {
@@ -243,13 +279,19 @@ export default class extends React.Component {
                 isInBond: goods.isInBond,
                 taxation: goods.taxation,
                 detail: goods.detail,
-
+                limitStock: goods.limitStock
             })
         } catch (e) {
             toast(e.message || "内容不存在");
             this.props.navigation.goBack();
         }
     }
+    //加入购物车的方法
+    goCart() { }
+    //购买方法
+    buy() { }
+    //分享商品
+    sharePage() { }
 }
 
 const styles = StyleSheet.create({
@@ -432,5 +474,63 @@ const styles = StyleSheet.create({
         fontSize: px(20),
         color: '#858385',
         lineHeight: px(36)
+    },
+    footer: {
+        height: px(90),
+        flexDirection: 'row',
+    },
+    footerCart: {
+        width: px(130),
+        height: px(90),
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        backgroundColor: '#fbfafc'
+    },
+    footerCartTxt: {
+        position: 'absolute',
+        top: px(16),
+        left: px(65),
+        borderWidth: 1,
+        borderColor: '#d0648f',
+        height: px(24),
+        lineHeight: px(22),
+        fontSize: px(16),
+        borderRadius: px(10),
+        paddingHorizontal: px(8),
+        paddingVertical: px(1),
+        paddingBottom: px(3),
+        color: '#333',
+        textAlign: 'center',
+        backgroundColor: '#efefef',
+        overflow: 'hidden'
+    },
+    footerBuy: {
+        backgroundColor: '#e7895c',
+        width: px(310),
+        height: px(90),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    footerBuyTxt: {
+        fontSize: px(30),
+        color: '#fff',
+        includeFontPadding: false
+    },
+    footerBuy1: {
+        backgroundColor: '#b2b3b5'
+    },
+    footerBuy1Txt: {},
+    footerShare: {
+        backgroundColor: '#d0648f',
+        width: px(310),
+        height: px(90),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    footerShareTxt: {
+        color: '#fff',
+        fontSize: px(30),
+        includeFontPadding: false
     },
 })
