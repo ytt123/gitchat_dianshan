@@ -13,6 +13,7 @@ import Home from './home/index'
 import Products from './home/products'
 import Shop_Cart from './home/shop_cart'
 import My from './home/my'
+import Goods from './detail/goods'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -104,6 +105,9 @@ const Tabs = Navigation.TabNavigator({
 const Pages = Navigation.StackNavigator({
     'Tabs': {
         screen: Tabs
+    },
+    'Goods':{
+        screen: Goods
     }
 }, {
         //这里做了一个页面跳转的动画

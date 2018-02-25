@@ -111,7 +111,7 @@ class MyBanner extends React.Component {
      * @param {*} shareImg 
      */
     getDetail(type, context, title, shareImg) {
-        type == 1 && this.props.navigation.navigate('DetailPage', {
+        type == 1 && this.props.navigation.navigate('Goods', {
             sku: context
         });
         type == 3 &&
@@ -266,7 +266,7 @@ class GoodItem extends React.Component {
     }
     //跳转商品详情页
     getDetail() {
-        this.props.navigation.navigate('DetailPage', {
+        this.props.navigation.navigate('Goods', {
             id: this.props.goods.sku ? '' : this.props.goods.id,
             sku: this.props.goods.sku
         });
@@ -742,7 +742,7 @@ export default class extends React.Component {
      */
     goOtherPage(item) {
         if (item.urlType == "sku" && item.prodId) {
-            this.props.navigation.navigate('DetailPage', {
+            this.props.navigation.navigate('Goods', {
                 id: item.prodId
             });
         }
