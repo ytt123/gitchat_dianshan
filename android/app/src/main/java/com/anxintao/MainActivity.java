@@ -1,6 +1,7 @@
 package com.anxintao;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactActivityDelegate;
 
 public class MainActivity extends ReactActivity {
 
@@ -12,4 +13,10 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "anxintao";
     }
+
+    @Override
+    protected ReactActivityDelegate createReactActivityDelegate() {
+        return new RNActivityDelegate(this, getMainComponentName());
+    }
+
 }
