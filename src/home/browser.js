@@ -57,13 +57,20 @@ export default class extends React.Component {
                 }} />
         </View>
     }
+
+    javascript=`window.postMessage("测试消息")`
     //网页加载成功之后
     loaded() {
-
+        this.refs.webview.injectJavaScript(this.javascript);
     }
     //网页回调消息到APP
-    onMessage() {
-
+    onMessage(t) {
+        try {
+            let data = t.nativeEvent.data;
+            log(data)
+        } catch (e) {
+            logWarm(e.message)
+        }
     }
     //网页跳转
     webChange(event) {
