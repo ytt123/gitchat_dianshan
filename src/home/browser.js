@@ -12,7 +12,7 @@ import Header from '../component/header'
 import { log, logWarm, logErr } from '../utils/log'
 
 
-export class extends React.Component {
+export default class extends React.Component {
 
     constructor(props) {
         super(props);
@@ -29,8 +29,8 @@ export class extends React.Component {
     }
     render() {
         return <View style={{ flex: 1 }}>
-            <Header title={this.state.title} />
-            <WebView
+            <Header title={this.state.title} navigation={this.props.navigation} />
+            <WebView style={{ width:375,height:500, backgroundColor:"#333" }}
                 //添加一个引用
                 ref="webview"
                 //设置浏览地址
@@ -43,8 +43,6 @@ export class extends React.Component {
                 mixedContentMode="always"
                 //显示loading动画
                 startInLoadingState={true}
-                //去掉dom本地存储
-                domStorageEnabled={false}
                 //开启缩放
                 scalesPageToFit={true}
                 //网页互动消息通知
@@ -58,6 +56,13 @@ export class extends React.Component {
                 }} />
         </View>
     }
-    onMessage() { }
-    loaded() { }
+    //网页加载成功之后
+    loaded() {
+
+    }
+    //网页回调消息到APP
+    onMessage() { 
+
+    }
+    
 }

@@ -115,10 +115,24 @@ class MyBanner extends React.Component {
             sku: context
         });
         type == 3 &&
-            this.props.navigation.navigate('HtmlViewPage', {
+            this.props.navigation.navigate('Browser', {
                 webPath: context,
                 img: shareImg
             });
+    }
+    goPage(item){
+        if (item.contextType == "sku") {
+            this.props.navigation.navigate('Goods', {
+                id: item.prodId,
+                sku: item.context
+            });
+        }
+        if (item.contextType == "h5") {
+            this.props.navigation.navigate('Browser', {
+                webPath: item.context,
+                img: item.showImg
+            });
+        }
     }
 }
 
@@ -613,7 +627,7 @@ export default class extends React.Component {
                     onRefresh={() => this.refresh()}//刷新调用的方法
                     onEndReached={() => this.nextPage()}//拉倒底部加载下一页
                     ListHeaderComponent={<View style={{ backgroundColor: "#fff" }}>
-                        <MyBanner ref="banner" />
+                        <MyBanner ref="banner" navigation={this.props.navigation} />
                         <Modules ref="module"
                             navigation={this.props.navigation}
                             goOtherPage={this.goOtherPage.bind(this)} />
@@ -747,7 +761,7 @@ export default class extends React.Component {
             });
         }
         if (item.urlType == "h5") {
-            this.props.navigation.navigate('HtmlViewPage', {
+            this.props.navigation.navigate('Browser', {
                 webPath: item.urlTypeValue,
                 img: item.imageUrl
             });
