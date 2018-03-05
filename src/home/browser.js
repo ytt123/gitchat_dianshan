@@ -30,7 +30,7 @@ export default class extends React.Component {
     render() {
         return <View style={{ flex: 1 }}>
             <Header title={this.state.title} navigation={this.props.navigation} />
-            <WebView style={{ width:375,height:500, backgroundColor:"#333" }}
+            <WebView
                 //添加一个引用
                 ref="webview"
                 //设置浏览地址
@@ -47,6 +47,7 @@ export default class extends React.Component {
                 scalesPageToFit={true}
                 //网页互动消息通知
                 onMessage={(t) => this.onMessage(t)}
+                onNavigationStateChange={(e) => this.webChange(e)}
                 onLoad={(e) => {
                     this.loaded()
                     log('网页加载成功', e.nativeEvent)
@@ -61,8 +62,16 @@ export default class extends React.Component {
 
     }
     //网页回调消息到APP
-    onMessage() { 
+    onMessage() {
 
     }
-    
+    //网页跳转
+    webChange(event) {
+        if (!event || !event.title) return;
+        if (event.title.indexOf("http") < 0 && event.title.indexOf("about:") < 0) {
+            this.setState({
+                title: event.title
+            });
+        }
+    }
 }
