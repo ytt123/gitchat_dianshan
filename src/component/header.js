@@ -19,23 +19,24 @@ import toast from '../utils/toast'
 export default class extends React.Component {
 
     static defaultProps = {
-        title : ""
+        title: "",
+        showLeft: true
     }
     render() {
-        return <View style={topStyles.header}>
+        return <View style={[topStyles.header, this.props.boxStyles]}>
             {Platform.OS == 'ios' && <View style={topStyles.topBox}></View>}
-            <View style={[topStyles.bar, this.props.boxStyles]}>
+            <View style={[topStyles.bar]}>
                 <View style={topStyles.leftBtn}>
-                    <TouchableOpacity style={topStyles.back}
+                    {this.props.showLeft && <TouchableOpacity style={topStyles.back}
                         onPress={() => this.props.navigation.goBack()}>
                         <View style={{ height: px(60), justifyContent: "center" }}>
                             <Image source={{ uri: require('../images/icon-back') }}
                                 style={{ width: px(40), height: px(40) }} />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                     {this.props.leftBtn}
                 </View>
-                <Text style={topStyles.title}>{this.props.title}</Text>
+                <Text style={[topStyles.title,this.props.textStyle]}>{this.props.title}</Text>
                 <View style={topStyles.rightBtn}>
                     {this.props.rightBtn}
                 </View>
