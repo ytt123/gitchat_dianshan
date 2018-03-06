@@ -45,6 +45,9 @@ exports.getHeader = function (name, value) {
     if (!name) return "";
     return headers[name] || '';
 }
+exports.getHeaders = function () {
+    return headers;
+}
 /**
  * 混合参数
  * @param {*} data 

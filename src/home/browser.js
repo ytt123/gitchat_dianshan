@@ -10,6 +10,7 @@ import {
 
 import Header from '../component/header'
 import { log, logWarm, logErr } from '../utils/log'
+import { getHeader, getHeaders } from '../utils/request'
 
 
 export default class extends React.Component {
@@ -57,8 +58,36 @@ export default class extends React.Component {
                 }} />
         </View>
     }
-
-    javascript=`window.postMessage("测试消息")`
+    //注入js
+    javascript = `
+    ;(function(win,undefined){
+        var sdk_list=["addCart","openDetail","buy","openCart",
+                    "orderPage","login","setTitle","wxpay","alipay","myOrderPage",
+                    "orderPage","myOrderDetail","orderDetail",];
+        function sdk_fun(name,arr){
+            var data=[name].concat(arr);
+            window.postMessage(JSON.stringify(data));
+        }
+        var _sdk=win.SDK||{};
+        _sdk.current="${getHeader('platform')}";
+        _sdk.xc_role="${getHeader('xcrole')}";
+        _sdk.utoken='${getHeader("utoken")}';
+        _sdk.uid='${getHeader("uid")}';
+        _sdk.header=${JSON.stringify(getHeaders())};
+        for(var i=0,j=sdk_list.length;i<j;i++){
+            ;(function(){
+                var name=sdk_list[i];
+                _sdk[name]=function(){
+                    var arr=Array.prototype.slice.apply(arguments);
+                    sdk_fun.call(SDK,name,arr);
+                }
+            })()
+        }
+        win.SDK=_sdk;
+        win.title&&_sdk.setShareInfo(win.title,win.desc,null,win.image,win.viewUrl);
+        win.Ready&&window.Ready();
+        _sdk.emit&&_sdk.emit("ready");
+    })(window);`
     //网页加载成功之后
     loaded() {
         this.refs.webview.injectJavaScript(this.javascript);
@@ -67,7 +96,11 @@ export default class extends React.Component {
     onMessage(t) {
         try {
             let data = t.nativeEvent.data;
-            log(data)
+            if (data) {
+                let args = JSON.parse(data);
+                let name = args.shift();
+                if (this[name]) this[name].call(this, ...args)
+            }
         } catch (e) {
             logWarm(e.message)
         }
@@ -80,5 +113,26 @@ export default class extends React.Component {
                 title: event.title
             });
         }
+    }
+
+    /**
+     * 打开详情页
+     * @param {*} id 
+     */
+    openDetail(id) {
+        if (/^[0-9]+$/.test(id + '')) {
+            this.props.navigation.navigate('Goods', {
+                id: id
+            });
+        } else {
+            this.props.navigation.navigate('Goods', {
+                sku: id
+            });
+        }
+    }
+    setShareInfo(title, desc, shareList, img, viewurl) {
+        this.setState({
+            title: title,
+        });
     }
 }
