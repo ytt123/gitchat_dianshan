@@ -57,8 +57,6 @@ const topStyles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        borderBottomColor: "#ddd",
-        borderBottomWidth: 1,
         height: px(90),
         paddingTop: px(10)
     },

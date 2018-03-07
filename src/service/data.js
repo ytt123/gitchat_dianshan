@@ -2,7 +2,7 @@
 /**
  * 全局身份信息
  */
-let User = observable({
+let User = {
     desc: "",
     headImgUrl: "http://img.cdn.daling.com/data/files/mobile/img/dalingjia.jpg",
     // inviteCode: "",//不再使用这个字段
@@ -20,7 +20,7 @@ let User = observable({
     couponCount: 0,
     stunnerTotalAmount: 0
 
-});
+};
 /**
  * 获取缓存的用户信息(伪)
  */
