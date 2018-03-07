@@ -8,7 +8,8 @@ import {
     ScrollView,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Image
+    Image,
+    Linking
 } from 'react-native';
 import TopHeader from '../component/header'
 import px from '../utils/px'
