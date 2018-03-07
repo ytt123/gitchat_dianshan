@@ -27,7 +27,7 @@ export default class extends React.Component {
             <TopHeader title='个人中心'
                 boxStyles={{ backgroundColor: "#d0648f" }}
                 textStyle={{ color: '#fff' }}
-                rightBtn={<TouchableOpacity>
+                rightBtn={<TouchableOpacity onPress={() => this.go('Setting')}>
                     <Image
                         style={{ width: px(42), height: px(42) }}
                         source={{ uri: require('../images/icon-setting') }} />
@@ -198,6 +198,15 @@ export default class extends React.Component {
 
     componentDidMount() {
 
+    }
+
+    /**
+     * 页面跳转方法
+     * @param {*} name 
+     * @param {*} data 
+     */
+    go(name, data) {
+        this.props.navigation.navigate(name, data);
     }
 }
 
