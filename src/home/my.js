@@ -11,8 +11,14 @@ import {
 } from 'react-native';
 import TopHeader from '../component/header'
 import px from '../utils/px'
+import request from '../utils/request'
+import { UserInfo } from '../service/data'
 
 export default class extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
     render() {
         return <View style={{ flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
@@ -27,5 +33,9 @@ export default class extends React.Component {
                     showLeft={false} />
             </ScrollView>
         </View>
+    }
+
+    componentDidMount() {
+
     }
 }
