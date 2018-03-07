@@ -53,7 +53,7 @@ export default class extends React.Component {
         </View>
     }
     goDebug() {
-        // this.props.navigation.navigate('Debugs');
+        this.props.navigation.navigate('Debugs');
     }
     logout(){}
 }

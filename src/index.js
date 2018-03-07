@@ -16,6 +16,8 @@ import My from './home/my'
 import Goods from './detail/goods'
 import Browser from './home/browser'
 import Setting from './center/setting'
+import Debugs from './debug/index'
+import Log from './debug/log'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -116,6 +118,12 @@ const Pages = Navigation.StackNavigator({
     },
     'Setting':{
         screen: Setting
+    },
+    'Debugs':{
+        screen: Debugs
+    },
+    'Log':{
+        screen: Log
     }
 }, {
         //这里做了一个页面跳转的动画
