@@ -25,7 +25,7 @@ export default class extends React.Component {
         return <ScrollView style={{ flex: 1 }}>
             {/*顶部功能组件*/}
             <TopHeader title='个人中心'
-                boxStyles={{ backgroundColor: "#d0648f" }}
+                boxStyles={{ backgroundColor: "#d0648f", marginBottom: 0 }}
                 textStyle={{ color: '#fff' }}
                 rightBtn={<TouchableOpacity onPress={() => this.go('Setting')}>
                     <Image
@@ -36,8 +36,7 @@ export default class extends React.Component {
             {/*个人简略信息组件*/}
             <TouchableWithoutFeedback>
                 <View style={styles.head}>
-                    <Image
-                        style={styles.headImg}
+                    <Image style={styles.headImg}
                         source={{ uri: UserInfo.headImgUrl }} />
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Text allowFontScaling={false} style={styles.headerName}>

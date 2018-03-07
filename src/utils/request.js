@@ -13,7 +13,7 @@ const touchBaseUrl = 'https://dalingjia.com/touch'
  */
 let headers = {
     uid: 0,
-    jsversion: "0.0.1",
+    jsversion: "0.1.1",
     utoken: "",
     platform: Platform.OS,
     clientid: '',

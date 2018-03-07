@@ -47,7 +47,8 @@ export default class extends React.Component {
 const topStyles = StyleSheet.create({
     header: {
         backgroundColor: '#fbfafc',
-        width: px(750)
+        width: px(750),
+        marginBottom: 5,
     },
     topBox: {
         width: px(750),
