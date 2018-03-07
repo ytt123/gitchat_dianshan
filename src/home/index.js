@@ -18,8 +18,8 @@ import request from '../utils/request'
 import px from '../utils/px'
 import Swiper from 'react-native-swiper'
 import toast from '../utils/toast'
-// import FastImage from 'react-native-fast-image'
 import Modules from './floor_modules'
+import ShareModal from '../component/ShareView'
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -662,6 +662,7 @@ export default class extends React.Component {
                     data={this.state.list}
                 />
             </View>
+            <ShareModal />
         </View>
     }
     async componentDidMount() {
