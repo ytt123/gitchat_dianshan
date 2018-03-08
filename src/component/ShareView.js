@@ -15,9 +15,10 @@ import toast from '../utils/toast'
 export default class extends React.Component {
     constructor(props) {
         super(props)
+        this.height=px(500)
         this.state = {
             isShow: false,//默认不显示弹层
-            boxY: 0,
+            boxY: new Animated.Value(this.height),
         }
         this.list = this.renderType(this.props.types)
     }
@@ -41,6 +42,7 @@ export default class extends React.Component {
     render() {
         return <Modal style={styles.view}
             onRequestClose={() => { }}
+            onShow={() => this.show()}
             animationType="none"
             transparent={true}
             visible={this.state.isShow}>
@@ -71,12 +73,34 @@ export default class extends React.Component {
     }
     //关闭弹层
     cancel() {
-        this.setState({ isShow: false })
+        Animated.timing(
+            this.state.boxY,
+            {
+                toValue: this.height,
+                duration: 200
+            }
+        ).start(() => {
+            this.setState({
+                isShow: false
+            })
+        });
     }
     //打开分享层
-    open(){
-        if(!this.state.isShow){
+    open() {
+        if (!this.state.isShow) {
             this.setState({ isShow: true })
+        }
+    }
+    //打开的动画
+    show() {
+        if (this.state.isShow) {
+            Animated.timing(
+                this.state.boxY,
+                {
+                    toValue: 0,
+                    duration: 200
+                }
+            ).start();
         }
     }
     //链接暂存变量
