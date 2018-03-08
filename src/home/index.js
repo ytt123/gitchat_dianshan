@@ -19,7 +19,7 @@ import px from '../utils/px'
 import Swiper from 'react-native-swiper'
 import toast from '../utils/toast'
 import Modules from './floor_modules'
-import ShareModal from '../component/ShareView'
+import ShareView, { SHARETYPE } from '../component/ShareView'
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -120,7 +120,7 @@ class MyBanner extends React.Component {
                 img: shareImg
             });
     }
-    goPage(item){
+    goPage(item) {
         if (item.contextType == "sku") {
             this.props.navigation.navigate('Goods', {
                 id: item.prodId,
@@ -526,7 +526,9 @@ class SearchHeader extends React.Component {
         this.props.navigation.navigate('SearchPage', {});
     }
     //TODO:分享
-    shareTo() { }
+    shareTo() {
+        this.props.share && this.props.share();
+    }
 }
 
 const styleSearchBar = StyleSheet.create({
@@ -618,7 +620,7 @@ export default class extends React.Component {
     render() {
         return <View style={{ flex: 1 }}>
             <View style={styles.headerView}>
-                <SearchHeader navigation={this.props.navigation} />
+                <SearchHeader share={() => this.share()} navigation={this.props.navigation} />
             </View>
             <View style={styles.pageView}>
                 <FlatList ref="flatlist"
@@ -662,11 +664,14 @@ export default class extends React.Component {
                     data={this.state.list}
                 />
             </View>
-            <ShareModal />
+            <ShareView ref='shareView' types={[SHARETYPE.WEIXIN, SHARETYPE.PENGYOUQUAN, SHARETYPE.LIANJIE, SHARETYPE.ERWEIMA]} />
         </View>
     }
     async componentDidMount() {
         this.loadShop();
+    }
+    share() {
+        this.refs.shareView.open();
     }
     //刷新方法
     async refresh() {

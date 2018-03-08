@@ -16,10 +16,27 @@ export default class extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isShow: true,//默认不显示弹层
+            isShow: false,//默认不显示弹层
             boxY: 0,
         }
-        this.list = []
+        this.list = this.renderType(this.props.types)
+    }
+    renderType(types) {
+        let list = [];
+        if (types) {
+            types.forEach((item, index) => {
+                list.push(<TouchableOpacity key={index}
+                    style={styles.shareBtn}
+                    onPress={this[item.method].bind(this)}
+                    activeOpacity={0.9}>
+                    <Image source={{ uri: item.url }}
+                        resizeMode='cover'
+                        style={{ width: px(96), height: px(96) }} />
+                    <Text style={styles.shareTxt} allowFontScaling={false}>{item.txt}</Text>
+                </TouchableOpacity>)
+            })
+        }
+        return list;
     }
     render() {
         return <Modal style={styles.view}
@@ -55,6 +72,55 @@ export default class extends React.Component {
     //关闭弹层
     cancel() {
         this.setState({ isShow: false })
+    }
+    //打开分享层
+    open(){
+        if(!this.state.isShow){
+            this.setState({ isShow: true })
+        }
+    }
+    //链接暂存变量
+    link = ''
+    //实现微信分享给朋友
+    weiFriend() { }
+    //实现转发朋友圈
+    weiPyq() { }
+    //实现复制链接
+    weiLink() {
+        Clipboard.setString(this.link)
+        toast('链接复制成功')
+    }
+    //实现展示二维码
+    weiCode() { }
+}
+
+/**
+ * 分享层显示的类型
+ */
+exports.SHARETYPE = {
+    /**
+     * 微信
+     */
+    WEIXIN: {
+        method: "weiFriend", url: require('../images/icon-weixin'), txt: '微信好友'
+    },
+    /**
+     * 微信朋友圈
+     */
+    PENGYOUQUAN: {
+        method: 'weiPyq', url: require('../images/icon-wei'), txt: '朋友圈'
+    },
+    /**
+     * 连接地址
+     */
+    LIANJIE: {
+        method: 'weiLink', url: require('../images/icon-share-link'), txt: '链接'
+    },
+    /**
+     * 二维码
+     */
+    ERWEIMA: {
+        method: 'weiCode', url: require('../images/icon-share-code'), txt: '二维码'
     }
 }
 const styles = StyleSheet.create({
@@ -98,4 +164,13 @@ const styles = StyleSheet.create({
         paddingLeft: px(50),
         paddingRight: px(50)
     },
+    shareBtn: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    shareTxt: {
+        marginTop: px(10),
+        fontSize: px(25),
+    }
 })
