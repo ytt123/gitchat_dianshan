@@ -143,6 +143,69 @@ class GoodList extends React.Component {
         </View>
     }
 }
+//底部栏
+class Footer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectALL: false
+        }
+    }
+    render() {
+        if (this.props.editStatus) {
+            return <View style={styles.footer}>
+                <View style={styles.operatingBtn}>
+                    <TouchableOpacity activeOpacity={0.8}
+                        style={styles.operatingBtnBox}
+                        onPress={()=>this.props.editSelectAllFn()}>
+                        {!this.props.editSelectAllStatus
+                            ? <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
+                                resizeMode='cover'
+                                style={{ width: px(34), height: px(34) }} />
+                            : <Image source={{ uri: require('../images/tab-shopping-cart-selected') }}
+                                resizeMode='cover'
+                                style={{ width: px(34), height: px(34) }} />
+                        }
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.footerContent}>
+                    <Text allowFontScaling={false} style={[styles.footerContentTxt0]}>全部</Text>
+                    <TouchableOpacity activeOpacity={0.8} onPress={this.props.delete}>
+                        <View style={[styles.delete]}>
+                            <Text allowFontScaling={false} style={styles.delete_txt}>删除</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        }
+        return <View style={styles.footer}>
+            <View style={styles.operatingBtn}>
+                <TouchableOpacity activeOpacity={0.8}
+                    style={styles.operatingBtnBox}
+                    onPress={()=>this.props.selectAllFn()}>
+                    {this.props.selectAllStatus
+                        ? <Image source={{ uri: require('../images/tab-shopping-cart-selected') }}
+                            resizeMode='cover'
+                            style={{ width: px(34), height: px(34) }} />
+                        : <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
+                            resizeMode='cover'
+                            style={{ width: px(34), height: px(34) }} />
+                    }
+                </TouchableOpacity>
+            </View>
+            <View style={styles.footerContent}>
+                <Text allowFontScaling={false} style={[styles.footerContentTxt0, styles.footerContentTxt1]}>全部</Text>
+                <Text allowFontScaling={false} style={styles.footerContentTxt1}>合计</Text>
+                <Text allowFontScaling={false} style={styles.footerContentTxt2}>￥{this.props.total_price}</Text>
+                <TouchableOpacity activeOpacity={0.8} onPress={this.props.submit}>
+                    <View style={[styles.submit, this.props.total_price > 0 ? '' : styles.submitDisabled]}>
+                        <Text allowFontScaling={false} style={styles.submit_txt}>去结算({this.props.total_count})</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        </View>
+    }
+}
 
 export default observer(class extends React.Component {
     constructor(props) {
@@ -210,7 +273,21 @@ export default observer(class extends React.Component {
                 />
                 }
             />
-
+            {CartList.data.list.length == 0
+                ? null
+                : <Footer
+                    editStatus={this.state.editStatus}
+                    total_count={CartList.data.total_count}
+                    total_price={CartList.data.total_price}
+                    selectAllStatus={CartList.isSelectAll}
+                    editSelectAllStatus={this.state.editSelectAllStatus}
+                    editSelectArr={this.state.editSelectArr}
+                    selectAllFn={CartList.selectAll}
+                    editSelectAllFn={this.editSelectAllFn.bind(this)}
+                    delete={this.delete.bind(this)}
+                    submit={this.submit.bind(this)}
+                />
+            }
         </View>
     }
     edit() { }
@@ -219,6 +296,9 @@ export default observer(class extends React.Component {
     changeQty() { }
     goDetail() { }
     goHome() { }
+    editSelectAllFn(){}
+    delete(){}
+    submit(){}
 })
 
 const styles = StyleSheet.create({
@@ -388,5 +468,67 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 0,
         fontSize: px(28)
+    },
+    footer: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#fff',
+        height: px(98),
+        borderTopWidth: px(1),
+        borderTopColor: '#efefef',
+        flexDirection: 'row',
+        alignItems: 'center',
+        overflow: 'hidden'
+    },
+    footerContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'flex-end',
+        height: px(98),
+        backgroundColor: '#fff'
+    },
+    footerContentTxt0: {
+        flex: 1,
+        textAlign: 'left'
+    },
+    footerContentTxt1: {
+        fontSize: px(28),
+        color: '#252426'
+    },
+    footerContentTxt2: {
+        fontSize: px(38),
+        color: '#d0648f',
+        marginRight: px(56),
+    },
+    submit: {
+        width: px(250),
+        height: px(98),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#d0648f'
+    },
+    submitDisabled: {
+        backgroundColor: '#b2b3b5'
+    },
+    submit_txt: {
+        fontSize: px(34),
+        color: '#fff'
+    },
+    delete: {
+        width: px(140),
+        height: px(60),
+        borderColor: '#d0648f',
+        borderWidth: px(1),
+        borderRadius: px(8),
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: px(30)
+    },
+    delete_txt: {
+        fontSize: px(26),
+        color: '#d0648f'
     },
 })
