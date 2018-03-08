@@ -20,6 +20,7 @@ import Swiper from 'react-native-swiper'
 import toast from '../utils/toast'
 import Modules from './floor_modules'
 import ShareView, { SHARETYPE } from '../component/ShareView'
+import { DialogModal } from '../component/ModalView'
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -665,10 +666,12 @@ export default class extends React.Component {
                 />
             </View>
             <ShareView ref='shareView' types={[SHARETYPE.WEIXIN, SHARETYPE.PENGYOUQUAN, SHARETYPE.LIANJIE, SHARETYPE.ERWEIMA]} />
+            <DialogModal ref="dialog" />
         </View>
     }
     async componentDidMount() {
         this.loadShop();
+        this.refs.dialog.alert("标题","测试内容","取消","确定");
     }
     share() {
         this.refs.shareView.open();
