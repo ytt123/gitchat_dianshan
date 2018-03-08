@@ -18,7 +18,7 @@ import TopHeader from '../component/header'
 export default class extends React.Component {
     render() {
         return <View style={{ flex: 1, backgroundColor: '#f5f3f6' }}>
-        {/*顶部设置*/}
+            {/*顶部设置*/}
             <TopHeader title='设置' navigation={this.props.navigation} />
             <View style={{ backgroundColor: '#fff'}}>
                 <TouchableWithoutFeedback>
@@ -52,10 +52,14 @@ export default class extends React.Component {
             </View>
         </View>
     }
+    //跳转日志页
     goDebug() {
         this.props.navigation.navigate('Debugs');
     }
-    logout(){}
+    //退出登录
+    logout(){
+        this.props.navigation.navigate('Login');
+    }
 }
 
 
