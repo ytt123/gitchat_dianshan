@@ -31,11 +31,10 @@ export default class extends React.Component {
             {/*顶部组件*/}
             <TopHeader title='登录' navigation={this.props.navigation} />
             {/*Logo*/}
-            <View>
-                <Image
-                    source={{ uri: require('../images/logo_new') }}
-                    style={{ width: px(220), height: px(130), marginTop: px(170), marginLeft: px(50), marginBottom: px(80) }} />
-            </View>
+            <Image
+                source={{ uri: require('../images/logo_new') }}
+                style={{ width: px(220), height: px(130), marginTop: px(170), marginLeft: px(50), marginBottom: px(80) }} />
+            {/*手机号输入框*/}
             <View style={[styles.input, { marginBottom: px(12) }]}>
                 <TextInput style={styles.inputTxt}
                     placeholder='请输入手机号' placeholderTextColor="#b2b3b5"
@@ -44,6 +43,7 @@ export default class extends React.Component {
                     onChangeText={(v) => this.setState({ tel: v })}
                     underlineColorAndroid="transparent" />
             </View>
+            {/*短信验证码*/}
             <View style={[styles.input, { marginBottom: px(62) }]}>
                 <TextInput style={styles.inputTxt}
                     placeholder='请输入验证码' placeholderTextColor="#b2b3b5"
@@ -58,12 +58,14 @@ export default class extends React.Component {
                     }
                 </Text>
             </View>
+            {/*登录按钮*/}
             <TouchableOpacity activeOpacity={0.8} onPress={() => this.submit()}>
                 <View style={[styles.btn, { backgroundColor: '#d0648f' }]}>
                     <Text allowFontScaling={false} style={{ fontSize: px(30), color: '#fff' }}>
                         登录</Text>
                 </View>
             </TouchableOpacity>
+            {/*微信登录*/}
             <View style={{ position: 'absolute', bottom: px(80) }}>
                 <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
                     activeOpacity={0.8}
@@ -112,11 +114,11 @@ export default class extends React.Component {
 
     }
     //短信登录
-    submit(){
+    submit() {
         toast('登录成功');
         this.goTabPage();
     }
-    goTabPage(){
+    goTabPage() {
         this.props.navigation.dispatch(NavigationActions.reset({
             index: 0,
             actions: [
