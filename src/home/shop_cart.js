@@ -6,7 +6,9 @@ import {
     View,
     Text,
     FlatList,
-    TouchableOpacity
+    TouchableOpacity,
+    Image,
+    TextInput
 } from 'react-native';
 import Header from '../component/header'
 import { observer } from "mobx-react"
@@ -15,10 +17,129 @@ import CartList from '../service/cart'
 
 //商品的样式
 class GoodList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = Object.assign({}, this.props.items, {
+            selectStatus: false
+        });
+    }
+    render() {
+        return <View style={styles.goods_main}>
+            <View style={styles.goods_list}>
+                {/*选中的按钮*/}
+                {this.props.editStatus
+                    ? <View style={styles.operatingBtn}>
+                        <TouchableOpacity activeOpacity={0.8}
+                            style={styles.operatingBtnBox}
+                            onPress={this.props.editSelect.bind(null, this.props.items.id)}>
+                            {this.props.editSelectArr.indexOf(this.props.items.id) == -1
+                                ? <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
+                                    resizeMode='cover'
+                                    style={{ width: px(34), height: px(34) }} />
+                                : <Image source={{ uri: require('../images/tab-shopping-cart-selected') }}
+                                    resizeMode='cover'
+                                    style={{ width: px(34), height: px(34) }} />
+                            }
+                        </TouchableOpacity>
+                    </View>
+                    : <View style={styles.operatingBtn}>
+                        {this.props.items.limitStock > 0 && this.props.items.can_select == 1
+                            ? <TouchableOpacity activeOpacity={0.8}
+                                style={styles.operatingBtnBox}
+                                onPress={CartList.select.bind(null, this.props.items.id, this.props.items.select_status)}>
+                                {this.props.items.select_status == 0
+                                    ? <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
+                                        resizeMode='cover'
+                                        style={{ width: px(34), height: px(34) }} />
+                                    : <Image source={{ uri: require('../images/tab-shopping-cart-selected') }}
+                                        resizeMode='cover'
+                                        style={{ width: px(34), height: px(34) }} />
+                                }
+                            </TouchableOpacity>
+                            : null}
+                    </View>
+                }
+                {/*商品图*/}
+                <View style={styles.goods_img}>
+                    <TouchableOpacity onPress={() => this.props.goDetail(this.props.items.id, this.props.items.sku)}>
+                        <Image source={{ uri: this.props.items.image }}
+                            style={styles.img}
+                            resizeMode='cover'
+                        />
+                        {this.props.items.limitStock == 0
+                            ? <View style={styles.goods_img_cover}>
+                                <Text allowFontScaling={false} style={styles.goods_img_txt}>已抢光</Text>
+                            </View>
+                            : null
+                        }
+                        {this.props.items.limitStock > 0 && this.props.items.limitStock < 10
+                            ? <View style={styles.goods_limit}>
+                                <Text allowFontScaling={false} style={styles.goods_limit_txt}>仅剩{this.props.items.limitStock}件</Text>
+                            </View>
+                            : null
+                        }
+                    </TouchableOpacity>
+                </View>
+                {/*商品名称价格等*/}
+                <View style={styles.goods_content}>
+                    <TouchableOpacity onPress={() => this.props.goDetail(this.props.items.id, this.props.items.sku)}>
+                        <Text allowFontScaling={false}
+                            style={[styles.goods_name, this.props.items.limitStock == 0 || this.props.items.can_select == 0 ? styles.color_disabled : '']}
+                            numberOfLines={2}>
+                            <Text allowFontScaling={false}>{this.props.items.goodsShowDesc}</Text>
+                        </Text>
+                    </TouchableOpacity>
+                    <View style={styles.operating}>
+                        <Text allowFontScaling={false}
+                            style={[styles.money, this.props.items.limitStock == 0 || this.props.items.can_select == 0 ? styles.color_disabled : '']}>
+                            ¥{this.props.items.salePrice}
+                        </Text>
+                        <Text allowFontScaling={false}
+                            style={[styles.quantity, this.props.items.limitStock == 0 || this.props.items.can_select == 0 ? styles.color_disabled : '']}>
+                            x{this.props.items.quantity}
+                        </Text>
+                        {this.props.items.limitStock > 0 && this.props.items.can_select != 0
+                            ? <View style={styles.operatingBox}>
+                                {this.props.items.quantity == 1
+                                    ? <TouchableOpacity
+                                        activeOpacity={0.8}>
+                                        <View style={styles.reduce}>
+                                            <Text allowFontScaling={false} style={[styles.btn1, styles.color_disabled1]}>-</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    : <TouchableOpacity
+                                        activeOpacity={0.8}
+                                        onPress={CartList.reduce.bind(null, this.props.items.id, this.props.items.quantity)}>
+                                        <View style={styles.reduce}>
+                                            <Text allowFontScaling={false} style={[styles.btn1]}>-</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                }
+                                <View style={styles.inpBox}>
+                                    <TextInput allowFontScaling={false}
+                                        style={styles.inp1}
+                                        defaultValue={String(this.props.items.quantity)}
+                                        keyboardType="numeric"
+                                        onChangeText={(txt) => this.props.goodsChangeQty(this.props.items.id, txt)}
+                                        onBlur={(event) => this.props.changeQty(this.props.items.id)}
+                                        autoFocus={false}
+                                        underlineColorAndroid="transparent">
+                                    </TextInput>
+                                </View>
 
-    render(){
-        return <View>
-            <Text>测试</Text>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={CartList.plus.bind(null, this.props.items.id, this.props.items.quantity, this.props.items.isBuyLimit, this.props.items.buyLimitNum, this.props.items.buyLimitMsg)}>
+                                    <View style={styles.plus}>
+                                        <Text allowFontScaling={false} style={[styles.btn1]}>+</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            : null
+                        }
+                    </View>
+                </View>
+            </View>
         </View>
     }
 }
@@ -97,7 +218,7 @@ export default observer(class extends React.Component {
     goodsChangeQty() { }
     changeQty() { }
     goDetail() { }
-    goHome(){}
+    goHome() { }
 })
 
 const styles = StyleSheet.create({
@@ -130,5 +251,142 @@ const styles = StyleSheet.create({
     empty_btn_txt: {
         fontSize: px(26),
         color: '#fff'
+    },
+    goods_main: {
+        width: px(750),
+        height: px(211),
+        borderBottomWidth: px(1),
+        borderBottomColor: '#efefef',
+    },
+    goods_list: {
+        width: px(750),
+        paddingVertical: px(30),
+        paddingRight: px(30),
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    operatingBtn: {
+        backgroundColor: '#fff',
+        width: px(88),
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    operatingBtnBox: {
+        width: px(88),
+        height: px(80),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff'
+    },
+    goods_img: {
+        width: px(150),
+        height: px(150),
+        position: 'relative'
+    },
+    img: {
+        width: px(150),
+        height: px(150),
+        borderRadius: px(10), overflow: 'hidden',
+        position: 'relative',
+        zIndex: 0
+    },
+    goods_img_cover: {
+        position: 'absolute',
+        left: px(20),
+        top: px(20),
+        zIndex: 1,
+        width: px(110),
+        height: px(110),
+        borderRadius: px(55),
+        overflow: 'hidden',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    goods_img_txt: {
+        fontSize: px(26),
+        color: '#fff'
+    },
+    goods_limit: {
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: px(30),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    goods_limit_txt: {
+        color: '#fff',
+        fontSize: px(22)
+    },
+    goods_content: {
+        flex: 1,
+        paddingLeft: px(23)
+    },
+    goods_name: {
+        color: '#252426',
+        height: px(92),
+        lineHeight: px(30),
+        fontSize: px(26)
+    },
+    operating: {
+        height: px(58),
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    money: {
+        color: '#f25ca0',
+        fontSize: px(28),
+        marginRight: px(20)
+    },
+    quantity: {
+        flex: 1,
+        color: '#666',
+        fontSize: px(28)
+    },
+    operatingBox: {
+        width: px(210),
+        height: px(68),
+        borderColor: '#ddd',
+        borderWidth: px(1),
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: px(10),
+        overflow: 'hidden'
+    },
+    reduce: {
+        width: px(68),
+        height: px(68),
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRightWidth: px(1),
+        borderRightColor: '#ddd',
+    },
+    plus: {
+        width: px(68),
+        height: px(68),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    btn1: {
+        fontSize: px(36),
+        textAlign: 'center',
+        backgroundColor: 'transparent'
+    },
+    inpBox: {
+        flex: 1,
+        borderRightWidth: px(1),
+        borderRightColor: '#ddd',
+    },
+    inp1: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        textAlign: 'center',
+        padding: 0,
+        fontSize: px(28)
     },
 })
