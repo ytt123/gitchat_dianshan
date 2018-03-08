@@ -8,7 +8,7 @@ import {
     runInAction
 } from 'mobx';
 
-export default class {
+export default new class {
     //购物车用到的数据
     data = extendObservable(this, {
         dis_count: 0,
