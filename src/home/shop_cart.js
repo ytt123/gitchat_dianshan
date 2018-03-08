@@ -16,6 +16,11 @@ import CartList from '../service/cart'
 //商品的样式
 class GoodList extends React.Component {
 
+    render(){
+        return <View>
+            <Text>测试</Text>
+        </View>
+    }
 }
 
 export default observer(class extends React.Component {

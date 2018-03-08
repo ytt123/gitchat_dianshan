@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 //添加路由组件
 import Navigation from 'react-navigation';
+import CartList from './service/cart'
 
 //添加展示用的首页
 import Home from './home/index'
@@ -158,8 +159,10 @@ export default class extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         return <Pages onNavigationStateChange={this.listenChange.bind(this)}></Pages>;
+    }
+    componentDidMount(){
+        CartList.init();
     }
     //监听路由的跳转
     listenChange(state1, state2, action) {
