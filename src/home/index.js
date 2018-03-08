@@ -671,7 +671,6 @@ export default class extends React.Component {
     }
     async componentDidMount() {
         this.loadShop();
-        this.refs.dialog.alert("标题","测试内容","取消","确定");
     }
     share() {
         this.refs.shareView.open();

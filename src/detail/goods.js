@@ -19,6 +19,7 @@ import request from '../utils/request'
 import px from '../utils/px'
 import toast from '../utils/toast'
 import Header from '../component/header'
+import { ImgsModal } from '../component/ModalView'
 
 export default class extends React.Component {
 
@@ -41,7 +42,7 @@ export default class extends React.Component {
             priceBoxStatus: false,
             smallImage: '',
             buyNumber: 1,
-
+            imgs:[]
         };
         this.id = this.props.navigation.state.params.id;
         this.sku = this.props.navigation.state.params.sku;
@@ -156,7 +157,7 @@ export default class extends React.Component {
                         {/*图片列表*/}
                         {
                             this.state.detail.mobile_detail.list.map((img, index) =>
-                                <TouchableWithoutFeedback key={index} ><Image
+                                <TouchableWithoutFeedback key={index} onPress={()=>this.openBigImg(img.image)} ><Image
                                     style={{ width: px(img.width), height: px(img.height) }}
                                     source={{
                                         uri: img.image
@@ -363,6 +364,8 @@ export default class extends React.Component {
                     </View>
                 </View>
             </Modal>
+            {/*大图弹层*/}
+            <ImgsModal ref='imgsModal' list={this.state.imgs}/>
         </View>
     }
     componentDidMount() {
@@ -371,6 +374,7 @@ export default class extends React.Component {
 
     async getDetail() {
         let goods = {};
+        let imgs=[];
         try {
             if (this.sku) {
                 goods = await request.get(`/goods/detail.do`, { sku: this.sku });
@@ -390,6 +394,7 @@ export default class extends React.Component {
                             logWarm(e.message)
                         }
                     }
+                    imgs.push(item)
                     return item;
                 });
             }
@@ -411,7 +416,7 @@ export default class extends React.Component {
                 smallImage: goods.shareImage,
                 isBuyLimit: goods.isBuyLimit,
                 buyLimitMsg: goods.buyLimitMsg,
-
+                imgs
             })
         } catch (e) {
             toast(e.message || "内容不存在");
@@ -464,6 +469,9 @@ export default class extends React.Component {
         this.setState({
             buyNumber: ++qty
         })
+    }
+    openBigImg(key){
+        this.refs.imgsModal.Open(key);
     }
 }
 
