@@ -67,4 +67,18 @@ const topStyles = StyleSheet.create({
         textAlign: "center",
         color: "#252426"
     },
+    leftBtn: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        width: px(120),
+    },
+    rightBtn: {
+        width: px(120),
+        marginRight:px(10),
+        flexDirection: "row",
+        justifyContent: "flex-end",
+    },
+    back: {
+        marginLeft: px(10)
+    },
 });
