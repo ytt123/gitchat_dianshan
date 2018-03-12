@@ -20,6 +20,7 @@ import Setting from './center/setting'
 import Debugs from './debug/index'
 import Log from './debug/log'
 import Login from './account/login'
+import Submit from './order/submit'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -129,6 +130,9 @@ const Pages = Navigation.StackNavigator({
     },
     'Login': {
         screen: Login
+    },
+    'Submit':{
+        screen:Submit
     }
 }, {
         //这里做了一个页面跳转的动画

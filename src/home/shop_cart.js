@@ -16,7 +16,7 @@ import px from '../utils/px'
 import CartList from '../service/cart'
 
 //商品的样式
-let GoodList= observer(class  extends React.Component {
+let GoodList = observer(class extends React.Component {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, this.props.items, {
@@ -143,7 +143,7 @@ let GoodList= observer(class  extends React.Component {
     }
 })
 //底部栏
-let Footer= observer(class  extends React.Component {
+let Footer = observer(class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -269,7 +269,7 @@ export default observer(class extends React.Component {
                     editSelect={() => this.editSelect(index)}
                     goodsChangeQty={this.goodsChangeQty.bind(this)}
                     goDetail={() => this.goDetail(item.id, item.sku)}
-                    select={()=>this.select(item.id,item.select_status)}
+                    select={() => this.select(item.id, item.select_status)}
                 />
                 }
             />
@@ -332,8 +332,8 @@ export default observer(class extends React.Component {
         CartList.setNum(id, Number(num));
     }
     //选中商品
-    select(id,status){
-        CartList.select(id,status);
+    select(id, status) {
+        CartList.select(id, status);
     }
     //全部选中的状态
     selectAllStatus() {
@@ -347,8 +347,19 @@ export default observer(class extends React.Component {
             selectAllStatus: status
         });
     }
+    //提交订单
     submit() {
-        //提交订单
+        let ids = [];
+        let nums = [];
+        CartList.data.list.forEach(item=>{
+            if(item.select_status==1){
+                ids.push(item.id)
+                nums.push(item.quantity)
+            }
+        })
+        this.props.navigation.navigate('Submit', {
+            ids, nums
+        });
     }
     //跳转到商品详情
     goDetail(id, sku) {
