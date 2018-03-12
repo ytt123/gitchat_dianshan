@@ -16,7 +16,7 @@ import px from '../utils/px'
 import CartList from '../service/cart'
 
 //商品的样式
-class GoodList extends React.Component {
+let GoodList= observer(class  extends React.Component {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, this.props.items, {
@@ -31,9 +31,9 @@ class GoodList extends React.Component {
                     ? <View style={styles.operatingBtn}>
                         <TouchableOpacity activeOpacity={0.8}
                             style={styles.operatingBtnBox}
-                            onPress={this.props.editSelect.bind(null, this.props.items.id)}>
-                            {this.props.editSelectArr.indexOf(this.props.items.id) == -1
-                                ? <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
+                            onPress={this.props.editSelect}>
+                            {this.props.editorArr.indexOf(this.props.items.id) < 0 ?
+                                <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
                                     resizeMode='cover'
                                     style={{ width: px(34), height: px(34) }} />
                                 : <Image source={{ uri: require('../images/tab-shopping-cart-selected') }}
@@ -46,7 +46,7 @@ class GoodList extends React.Component {
                         {this.props.items.limitStock > 0 && this.props.items.can_select == 1
                             ? <TouchableOpacity activeOpacity={0.8}
                                 style={styles.operatingBtnBox}
-                                onPress={CartList.select.bind(null, this.props.items.id, this.props.items.select_status)}>
+                                onPress={this.props.select}>
                                 {this.props.items.select_status == 0
                                     ? <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
                                         resizeMode='cover'
@@ -61,7 +61,7 @@ class GoodList extends React.Component {
                 }
                 {/*商品图*/}
                 <View style={styles.goods_img}>
-                    <TouchableOpacity onPress={() => this.props.goDetail(this.props.items.id, this.props.items.sku)}>
+                    <TouchableOpacity onPress={() => this.props.goDetail()}>
                         <Image source={{ uri: this.props.items.image }}
                             style={styles.img}
                             resizeMode='cover'
@@ -82,7 +82,7 @@ class GoodList extends React.Component {
                 </View>
                 {/*商品名称价格等*/}
                 <View style={styles.goods_content}>
-                    <TouchableOpacity onPress={() => this.props.goDetail(this.props.items.id, this.props.items.sku)}>
+                    <TouchableOpacity onPress={() => this.props.goDetail()}>
                         <Text allowFontScaling={false}
                             style={[styles.goods_name, this.props.items.limitStock == 0 || this.props.items.can_select == 0 ? styles.color_disabled : '']}
                             numberOfLines={2}>
@@ -121,7 +121,6 @@ class GoodList extends React.Component {
                                         defaultValue={String(this.props.items.quantity)}
                                         keyboardType="numeric"
                                         onChangeText={(txt) => this.props.goodsChangeQty(this.props.items.id, txt)}
-                                        onBlur={(event) => this.props.changeQty(this.props.items.id)}
                                         autoFocus={false}
                                         underlineColorAndroid="transparent">
                                     </TextInput>
@@ -142,9 +141,9 @@ class GoodList extends React.Component {
             </View>
         </View>
     }
-}
+})
 //底部栏
-class Footer extends React.Component {
+let Footer= observer(class  extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -157,7 +156,7 @@ class Footer extends React.Component {
                 <View style={styles.operatingBtn}>
                     <TouchableOpacity activeOpacity={0.8}
                         style={styles.operatingBtnBox}
-                        onPress={()=>this.props.editSelectAllFn()}>
+                        onPress={() => this.props.editSelectAllFn()}>
                         {!this.props.editSelectAllStatus
                             ? <Image source={{ uri: require('../images/tab-shopping-cart-select') }}
                                 resizeMode='cover'
@@ -182,7 +181,7 @@ class Footer extends React.Component {
             <View style={styles.operatingBtn}>
                 <TouchableOpacity activeOpacity={0.8}
                     style={styles.operatingBtnBox}
-                    onPress={()=>this.props.selectAllFn()}>
+                    onPress={() => this.props.selectAllFn()}>
                     {this.props.selectAllStatus
                         ? <Image source={{ uri: require('../images/tab-shopping-cart-selected') }}
                             resizeMode='cover'
@@ -196,16 +195,16 @@ class Footer extends React.Component {
             <View style={styles.footerContent}>
                 <Text allowFontScaling={false} style={[styles.footerContentTxt0, styles.footerContentTxt1]}>全部</Text>
                 <Text allowFontScaling={false} style={styles.footerContentTxt1}>合计</Text>
-                <Text allowFontScaling={false} style={styles.footerContentTxt2}>￥{this.props.total_price}</Text>
+                <Text allowFontScaling={false} style={styles.footerContentTxt2}>￥{CartList.data.total_price}</Text>
                 <TouchableOpacity activeOpacity={0.8} onPress={this.props.submit}>
                     <View style={[styles.submit, this.props.total_price > 0 ? '' : styles.submitDisabled]}>
-                        <Text allowFontScaling={false} style={styles.submit_txt}>去结算({this.props.total_count})</Text>
+                        <Text allowFontScaling={false} style={styles.submit_txt}>去结算({CartList.data.total_count})</Text>
                     </View>
                 </TouchableOpacity>
             </View>
         </View>
     }
-}
+})
 
 export default observer(class extends React.Component {
     constructor(props) {
@@ -218,8 +217,7 @@ export default observer(class extends React.Component {
             selectAllStatus: false,
             editSelectAllStatus: false,
             SelectArr: [],
-            editSelectArr: [],
-            list: []
+            editorArr: [],//编辑的商品数组
         };
         this.edit = this.edit.bind(this);
     }
@@ -235,11 +233,13 @@ export default observer(class extends React.Component {
                 titleStyle={{
                     color: "#000"
                 }}
-                rightBtn={CartList.data.list.length > 0 ?
+                rightBtn={this.state.editStatus ?
                     <Text allowFontScaling={false}
-                        onPress={() => { }}
+                        onPress={() => this.done()}
+                        style={styles.headerRight}>完成</Text> :
+                    <Text allowFontScaling={false}
+                        onPress={() => this.edit()}
                         style={styles.headerRight}>编辑</Text>
-                    : null
                 }
             />
             <FlatList
@@ -261,15 +261,15 @@ export default observer(class extends React.Component {
                     }
                 }}
                 data={CartList.data.list}
-                renderItem={({ item }) => <GoodList
+                renderItem={({ item, index }) => <GoodList
                     items={item}
                     editStatus={this.state.editStatus}
                     limitStock={this.limitStock}
-                    editSelectArr={this.state.editSelectArr}
-                    editSelect={this.editSelect.bind(this)}
+                    editorArr={this.state.editorArr}
+                    editSelect={() => this.editSelect(index)}
                     goodsChangeQty={this.goodsChangeQty.bind(this)}
-                    changeQty={this.changeQty.bind(this)}
-                    goDetail={(id, sku) => this.goDetail(id, sku)}
+                    goDetail={() => this.goDetail(item.id, item.sku)}
+                    select={()=>this.select(item.id,item.select_status)}
                 />
                 }
             />
@@ -279,9 +279,8 @@ export default observer(class extends React.Component {
                     editStatus={this.state.editStatus}
                     total_count={CartList.data.total_count}
                     total_price={CartList.data.total_price}
-                    selectAllStatus={CartList.isSelectAll}
+                    selectAllStatus={this.state.selectAllStatus}
                     editSelectAllStatus={this.state.editSelectAllStatus}
-                    editSelectArr={this.state.editSelectArr}
                     selectAllFn={CartList.selectAll}
                     editSelectAllFn={this.editSelectAllFn.bind(this)}
                     delete={this.delete.bind(this)}
@@ -290,15 +289,78 @@ export default observer(class extends React.Component {
             }
         </View>
     }
-    edit() { }
-    editSelect() { }
-    goodsChangeQty() { }
-    changeQty() { }
-    goDetail() { }
-    goHome() { }
-    editSelectAllFn(){}
-    delete(){}
-    submit(){}
+    //进入编辑状态
+    edit() {
+        this.setState({ editStatus: true })
+    }
+    //退出编辑状态
+    done() {
+        this.setState({ editStatus: false })
+    }
+    //编辑选中商品
+    editSelect(index) {
+        let item = CartList.data.list[index];
+        if (this.state.editorArr.indexOf(item.id) < 0) {
+            this.state.editorArr.push(item.id);
+        } else {
+            this.state.editorArr.splice(this.state.editorArr.indexOf(item.id), 1)
+        }
+        let editSelectAllStatus = false;
+        if (this.state.editorArr.length === CartList.data.list.length) {
+            editSelectAllStatu = true;
+        }
+        this.setState({ editorArr: this.state.editorArr.concat(), editSelectAllStatus })
+    }
+    //编辑选中所有商品
+    editSelectAllFn() {
+        if (this.state.editSelectAllStatus) {
+            this.setState({ editorArr: [], editSelectAllStatus: false })
+        } else {
+            let list = []
+            CartList.data.list.forEach(item => {
+                list.push(item.id)
+            })
+            this.setState({ editorArr: list, editSelectAllStatus: true })
+        }
+    }
+    //删除
+    delete() {
+        CartList.deleteGoods(this.state.editorArr.join(','))
+    }
+    //修改数量
+    goodsChangeQty(id, num) {
+        CartList.setNum(id, Number(num));
+    }
+    //选中商品
+    select(id,status){
+        CartList.select(id,status);
+    }
+    //全部选中的状态
+    selectAllStatus() {
+        let status = CartList.data.list.every(res => {
+            if (res.can_select == 0 || res.limitStock == 0) {
+                return true;
+            }
+            return res.select_status == 1;
+        });
+        this.setState({
+            selectAllStatus: status
+        });
+    }
+    submit() {
+        //提交订单
+    }
+    //跳转到商品详情
+    goDetail(id, sku) {
+        this.props.navigation.navigate('Goods', {
+            id: sku ? '' : id,
+            sku: sku
+        });
+    }
+    //跳到首页
+    goHome() {
+        this.props.navigation.navigate('Home');
+    }
 })
 
 const styles = StyleSheet.create({

@@ -58,6 +58,25 @@ export default new class {
             quantity: 3,
             salePrice: "128.00",
             select_status: 0
+        },
+        {
+            benefitMoney: '3.00',
+            buyLimitNum: 0,
+            can_select: 1,
+            goodsName: "MAC/魅可子弹头口红 Dangerous (3g )",
+            goodsShowDesc: '[MAC]MAC/魅可子弹头口红 Dangerous (3g )',
+            goodsShowName: '美国·抢镜的必备法宝',
+            goods_price: '384.00',
+            id: '22',
+            image: 'http://img4.daling.com/data/files/mobile/2017/11/30/15120349684184.jpg_300x300.jpg',
+            isBuyLimit: 0,
+            isForeignSupply: 1,
+            isInBond: 1,
+            limitStock: 400,
+            marketPrice: '170.00',
+            quantity: 3,
+            salePrice: "128.00",
+            select_status: 0
         }]
         this.data.total_count = 3;
         this.data.total_price = "0";
