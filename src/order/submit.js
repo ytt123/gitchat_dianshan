@@ -17,6 +17,8 @@ import {
 import TopHeader from '../component/header'
 import px from '../utils/px'
 import request from '../utils/request'
+import { pay, isWXAppInstalled } from 'react-native-wechat';
+import toast from '../utils/toast';
 
 export default class extends React.Component {
 
@@ -28,7 +30,8 @@ export default class extends React.Component {
             payableAmount: 0,//支付金额
             balancePayAmount: 0,//可使用余额
             balanceAmount: 0,   //可用余额
-            goods: []
+            goods: [],
+            useBalance: false,//是否使用余额支付
         }
     }
     render() {
@@ -154,7 +157,7 @@ export default class extends React.Component {
                             {Number(this.state.payableAmount).toFixed(2)}
                         </Text>
                     </View>
-                    <TouchableOpacity onPress={this.areaCheckForOrder.bind(this)} activeOpacity={0.8}>
+                    <TouchableOpacity onPress={this.submit.bind(this)} activeOpacity={0.8}>
                         <View style={styles.footerBuy}>
                             <Text allowFontScaling={false} style={styles.footerBuyTxt}>确定支付</Text>
                         </View>
@@ -164,6 +167,12 @@ export default class extends React.Component {
         </View>
     }
     componentDidMount() {
+        this.getOrderDetail()
+        this.getDefaultAddress();
+    }
+
+    //获取预下单数据
+    getOrderDetail() {
         //使用假数据
         let goods = [{
             benefitMoney: '3.00',
@@ -189,15 +198,72 @@ export default class extends React.Component {
         let payableAmount = 200;
         let balancePayAmount = 120;
         let balanceAmount = 500;
+        let useBalance = false;
         this.setState({
             address, totalAmount, payableAmount, balanceAmount,
-            balancePayAmount, goods
+            balancePayAmount, goods, useBalance
         })
     }
+    //获取默认地址
+    getDefaultAddress() {
+        let address = {
+            name: "收货人",
+            phone: "15600222222",
+            province: "北京",
+            city: "北京",
+            district: "朝阳区",
+            detail: "朝阳大悦城xxx号xxx店"
+        }
+        this.setState({ address })
+    }
+    //改变余额使用状态
+    switchOnChange() {
+        if (this.state.balanceAmount <= 0) {
+            toast("余额不足"); return;
+        }
+        this.setState({ useBalance: true });
+        //重新获取金额,后端返回具体的数据
+        // this.getOrderDetail()
+    }
     //选择地址
-    selectAddress() { }
+    selectAddress() {
+        this.props.navigation.navigate('AddressList', {
+            selected: this.state.address,
+            callback: (address) => {
+                if (!address) return;
+                this.setState({
+                    'address': address,
+                });
+            }
+        });
+    }
     //确定支付
-    areaCheckForOrder() { }
+    async submit() {
+        if (!this.state.address.name) {
+            toast('请选择地址');
+            return;
+        }
+        let wx_data = {}
+        try {
+            //向后台发送请求,生成订单并返回调起微信支付所需要的数据
+            // wx_data = await request.post('/saleOrderApp/createOrder.do', {
+            //     //需要提交的订单数据
+            // })
+        } catch (e) {
+            toast('下单失败');
+        }
+        let isInstalled = await isWXAppInstalled();
+        if (!isInstalled) {
+            toast('请安装微信客户端');
+            return;
+        }
+        try {
+            let res = await wxPay(datas.paydata);
+            //微信返回结果
+        } catch (e) {
+            //微信调起失败/取消
+        }
+    }
 }
 const styles = StyleSheet.create({
     page: {

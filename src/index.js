@@ -21,6 +21,7 @@ import Debugs from './debug/index'
 import Log from './debug/log'
 import Login from './account/login'
 import Submit from './order/submit'
+import AddressList from './center/addressList'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -131,8 +132,11 @@ const Pages = Navigation.StackNavigator({
     'Login': {
         screen: Login
     },
-    'Submit':{
-        screen:Submit
+    'Submit': {
+        screen: Submit
+    },
+    'AddressList': {
+        screen: AddressList
     }
 }, {
         //这里做了一个页面跳转的动画
@@ -165,7 +169,7 @@ export default class extends React.Component {
     render() {
         return <Pages onNavigationStateChange={this.listenChange.bind(this)}></Pages>;
     }
-    componentDidMount(){
+    componentDidMount() {
         CartList.init();
     }
     //监听路由的跳转
