@@ -207,6 +207,7 @@ export default class extends React.Component {
     //获取默认地址
     getDefaultAddress() {
         let address = {
+            id:"1",
             name: "收货人",
             phone: "15600222222",
             province: "北京",
@@ -258,7 +259,7 @@ export default class extends React.Component {
             return;
         }
         try {
-            let res = await wxPay(datas.paydata);
+            let res = await pay(wx_data);
             //微信返回结果
         } catch (e) {
             //微信调起失败/取消

@@ -139,6 +139,7 @@ const Pages = Navigation.StackNavigator({
         screen: AddressList
     }
 }, {
+        initialRouteName:'AddressList',
         //这里做了一个页面跳转的动画
         transitionConfig: () => ({
             screenInterpolator: sceneProps => {
