@@ -96,7 +96,7 @@ export default class extends React.Component {
             refreshing: false, //是否显示下拉加载菊花
             list: [],
             initSelected: this.props.navigation.state.params.selected,
-            isSelect: this.props.navigation.state.params.callback,
+            callback: this.props.navigation.state.params.callback,
         }
     }
     render() {
@@ -122,6 +122,11 @@ export default class extends React.Component {
                     <Text style={styles.emptyList} allowFontScaling={false}>暂无收货地址</Text>
                 }
             />
+            <TouchableWithoutFeedback onPress={() => this.goCreate()}>
+                <View style={styles.footer}>
+                    <Text allowFontScaling={false} style={styles.footerTxt}>添加地址</Text>
+                </View>
+            </TouchableWithoutFeedback>
         </View>
     }
     componentDidMount() {
@@ -153,12 +158,54 @@ export default class extends React.Component {
     }
     //加载下一页
     next() {
-
+        //真是情况的代码
+        // try {
+        //     this.start++;
+        //     let list = request.get('/get/address,do', {
+        //         start: this.start
+        //     })
+        //     if (!list || list.constructor !== Array) return;
+        //     this.setState({ list })
+        // } catch (e) {
+        //     toast(e.message)
+        // }
     }
-    select() { }
-    defaultSelect() { }
-    goEdit() { }
-    delAddress() { }
+    //选中并返回
+    select(address) {
+        if (this.state.callback) this.state.callback(address);
+        this.props.navigation.goBack();
+    }
+    //设置默认地址
+    defaultSelect(id) {
+        // try {
+        //     request.post("/set/address.do",{id:id})
+        //     this.refresh();
+        // } catch (e) {
+        //     toast(e.message)
+        // }
+    }
+    //删除
+    delAddress(id) {
+        // try {
+        //     request.post("/del/address.do",{id:id})
+        //     this.refresh();
+        // } catch (e) {
+        //     toast(e.message)
+        // }
+    }
+    //跳转编辑
+    goEdit(id) {
+        this.props.navigation.navigate('AddressEdit', {
+            id,
+            callback: () => this.refresh()
+        });
+    }
+    //添加新地址
+    goCreate() {
+        this.props.navigation.navigate('AddressEdit', {
+            callback: () => this.refresh()
+        });
+    }
 }
 
 const styles = StyleSheet.create({
