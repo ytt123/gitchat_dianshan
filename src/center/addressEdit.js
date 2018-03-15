@@ -17,6 +17,8 @@ import {
 import { getHeader } from '../utils/request'
 import px from '../utils/px'
 import TopHeader from '../component/header'
+import { getItem, setItem } from '../utils/Storage'
+import toast from '../utils/toast';
 
 export default class extends React.Component {
 
@@ -24,6 +26,7 @@ export default class extends React.Component {
         super(props);
         if (!this.props.navigation.state.params) this.props.navigation.state.params = {}
         this.state = {
+            id: this.props.navigation.state.params.id || 0,
             name: "",
             phone: "",
             sheng: "",
@@ -189,11 +192,11 @@ export default class extends React.Component {
                         {
                             Platform.OS == 'ios' ? <Switch onTintColor="#32C632"
                                 tintColor="#e5e5ea"
-                                value={this.state.checked} onValueChange={this.setDefaultAddress} /> :
+                                value={this.state.checked} onValueChange={this.setDefaultAddress.bind(this)} /> :
                                 <Switch onTintColor="#32C632"
                                     tintColor="#e5e5ea"
                                     thumbTintColor="#ffffff"
-                                    value={this.state.checked} onValueChange={this.setDefaultAddress} />
+                                    value={this.state.checked} onValueChange={this.setDefaultAddress.bind(this)} />
                         }
                     </View>
                 </View>
@@ -206,9 +209,27 @@ export default class extends React.Component {
             </TouchableWithoutFeedback>
         </View>
     }
-
-    componentDidMount() {
-
+    address_data = {}
+    async componentDidMount() {
+        // try {
+        //     //获取默认数据
+        //     let data = await getItem("address")
+        //     if (!data) data = { time: 0 }
+        //     //使用时间戳获取数据
+        //     let res = await request.get("get/address/data", { time: data.time })
+        //     //有返回则更新本地数据
+        //     if (res) {
+        //         data = res;
+        //         setItem("address", data);
+        //     }
+        //     //复制给组件
+        //     this.address_data = data;
+        // } catch (e) {
+        //     toast(e.message)
+        // }
+        if (this.state.id > 0) {
+            //获取远程数据
+        }
     }
     //设置默认
     setDefaultAddress(status) {
@@ -216,11 +237,33 @@ export default class extends React.Component {
             checked: status
         })
     }
-
-    save() {
+    //保存地址
+    async save() {
+        let data = {
+            id: this.state.id,
+            name: this.state.name,
+            phone: this.state.phone,
+            province: this.state.sheng,
+            city: this.state.shi,
+            district: this.state.qu,
+            detail: this.state.detail,
+        }
         if (!this.state.name) {
             toast('请输入收货人姓名'); return;
         }
+        if (!this.state.phone) {
+            toast('请输入收货人电话'); return;
+        }
+        if (!this.state.detail) {
+            toast('请输入收货地址'); return;
+        }
+        // try {
+        //     let data=request.post("/address",this.state);
+        // } catch (e) {
+        //     toast(e.message)
+        // }
+        this.callback && this.callback(data);
+        this.props.navigation.goBack();
     }
 }
 const styles = StyleSheet.create({
