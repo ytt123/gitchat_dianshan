@@ -22,6 +22,7 @@ import Log from './debug/log'
 import Login from './account/login'
 import Submit from './order/submit'
 import AddressList from './center/addressList'
+import AddressEdit from './center/addressEdit'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -137,6 +138,9 @@ const Pages = Navigation.StackNavigator({
     },
     'AddressList': {
         screen: AddressList
+    },
+    'AddressEdit':{
+        screen: AddressEdit
     }
 }, {
         initialRouteName:'AddressList',

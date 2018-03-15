@@ -18,18 +18,15 @@ import TopHeader from '../component/header'
 import px from '../utils/px'
 
 class AddressItem extends React.Component {
-
     render() {
-        const { address, selected, isSelect, isSelected } = this.props
+        const { address } = this.props
         return <View style={styles.addressItem} key={address.id}>
             <TouchableWithoutFeedback onPress={() => this.props.select(address)}>
                 <View style={styles.addressInfo}>
-                    {isSelect &&
+                    {address.defaultYn == 'Y' &&
                         <View style={styles.addressCheck}>
-                            {isSelected &&
-                                <Image source={{ uri: require('../images/icon-address-check') }}
-                                    style={{ width: px(30), height: px(20), marginTop: px(50) }} />
-                            }
+                            <Image source={{ uri: require('../images/icon-address-check') }}
+                                style={{ width: px(30), height: px(20), marginTop: px(50) }} />
                         </View>
                     }
                     <View style={styles.addressDetail}>
