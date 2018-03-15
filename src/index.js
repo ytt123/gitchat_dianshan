@@ -23,6 +23,7 @@ import Login from './account/login'
 import Submit from './order/submit'
 import AddressList from './center/addressList'
 import AddressEdit from './center/addressEdit'
+import Success from './order/success'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -141,9 +142,12 @@ const Pages = Navigation.StackNavigator({
     },
     'AddressEdit':{
         screen: AddressEdit
+    },
+    'Success':{
+        screen: Success
     }
 }, {
-        initialRouteName:'AddressList',
+        initialRouteName:'Success',
         //这里做了一个页面跳转的动画
         transitionConfig: () => ({
             screenInterpolator: sceneProps => {
