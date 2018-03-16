@@ -21,7 +21,8 @@ import toast from '../utils/toast';
 
 export default class extends React.Component {
     render() {
-        return <View>
+        return <View style={{ flex: 1 }}>
+            <TopHeader title="订单管理" navigation={this.props.navigation} />
 
         </View>
     }

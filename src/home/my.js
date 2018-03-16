@@ -50,7 +50,7 @@ export default class extends React.Component {
             </TouchableWithoutFeedback>
             {/*3个快捷通道*/}
             <View style={styles.link}>
-                <TouchableOpacity activeOpacity={0.9} style={styles.linkRow}>
+                <TouchableOpacity activeOpacity={0.9} style={styles.linkRow} onPress={() => this.go("OrderList", {})}>
                     <Image
                         style={{ width: px(80), height: px(80) }}
                         source={{ uri: require('../images/icon-myOrder1') }} />
@@ -127,7 +127,7 @@ export default class extends React.Component {
                         <Text allowFontScaling={false} style={styles.toolsButtonLabel}>店铺设置</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => this.go("OrderList", {})}>
                     <View style={styles.toolsButton}>
                         <Image style={[styles.toolsButtonImg, { width: px(46) }]}
                             resizeMode='contain'
