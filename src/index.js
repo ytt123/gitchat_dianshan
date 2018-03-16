@@ -24,6 +24,7 @@ import Submit from './order/submit'
 import AddressList from './center/addressList'
 import AddressEdit from './center/addressEdit'
 import Success from './order/success'
+import OrderList from './order/list'
 
 //创建tab页的顶部样式
 const styles = StyleSheet.create({
@@ -145,6 +146,9 @@ const Pages = Navigation.StackNavigator({
     },
     'Success':{
         screen: Success
+    },
+    'OrderList':{
+        screen: OrderList
     }
 }, {
         initialRouteName:'Success',
