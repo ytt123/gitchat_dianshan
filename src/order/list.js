@@ -102,7 +102,11 @@ class OrderItem extends React.Component {
             </TouchableWithoutFeedback>
         </View>
     }
-    goDetail(orderNo) { }
+    goDetail(orderNo) { 
+        this.props.navigation.navigate('OrderDetail', {
+            orderNo: orderNo
+        });
+    }
 }
 //订单列表
 class OrderList extends React.Component {
