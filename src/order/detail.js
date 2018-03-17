@@ -12,6 +12,7 @@ import {
     ScrollView,
     TouchableWithoutFeedback,
     Platform,
+    Clipboard
 } from 'react-native';
 import TopHeader from '../component/header'
 import px from '../utils/px'
@@ -34,7 +35,7 @@ export default class extends React.Component {
             order: {},
             address: {},
             item: [],
-            time:"20小时10分钟10秒"
+            time: "20小时10分钟10秒"
         };
     }
 
@@ -124,13 +125,14 @@ export default class extends React.Component {
                 <View style={[styles.footer2, styles.footer]}>
                     <Text allowFontScaling={false} style={{ fontSize: px(20), color: '#858385' }}>付款剩余时间{this.state.time}</Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text onPress={this.cancel} style={[styles.cBtn, styles.cancelBtn]}
+                        <Text onPress={this.cancel.bind(this)} style={[styles.cBtn, styles.cancelBtn]}
                             allowFontScaling={false}>取消订单</Text>
-                        <Text onPress={this.pay} style={[styles.cBtn, styles.payBtn]}
+                        <Text onPress={this.pay.bind(this)} style={[styles.cBtn, styles.payBtn]}
                             allowFontScaling={false}>去支付</Text>
                     </View>
                 </View>
             </View>
+            <DialogModal ref="dialog" />
         </View>
     }
 
@@ -169,7 +171,31 @@ export default class extends React.Component {
     }
     //复制订单号
     copy(str) {
-
+        Clipboard.setString(str);
+        toast('复制成功');
+    }
+    //支付
+    async pay() {
+        //请求下单
+        //await reqest.post('/saleOrderApp/payOrder.do')
+        let isInstalled = await isWXAppInstalled();
+        if (!isInstalled) {
+            toast('没有安装微信');
+            return;
+        }
+        //调起微信
+        // let res = await wxPay(data.paydata);
+    }
+    //取消订单
+    cancel() { 
+        this.refs.dialog.alert(null,"是否取消订单?",{
+            txt:"放弃操作",
+        },{
+            txt:"取消订单",click:()=>{
+                //request.post()
+                toast('取消成功')
+            }
+        });
     }
 }
 
