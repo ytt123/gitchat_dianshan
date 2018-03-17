@@ -155,7 +155,7 @@ const Pages = Navigation.StackNavigator({
         screen: OrderDetail
     }
 }, {
-        initialRouteName:'OrderList',
+        initialRouteName:'OrderDetail',
         //这里做了一个页面跳转的动画
         transitionConfig: () => ({
             screenInterpolator: sceneProps => {

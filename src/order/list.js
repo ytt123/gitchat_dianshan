@@ -46,7 +46,7 @@ class ProductItem extends React.Component {
         </View>
     }
 }
-
+exports.ProductItem = ProductItem;
 //订单列表的一行内容
 class OrderItem extends React.Component {
     constructor(props) {
@@ -102,12 +102,14 @@ class OrderItem extends React.Component {
             </TouchableWithoutFeedback>
         </View>
     }
-    goDetail(orderNo) { 
+    goDetail(orderNo) {
         this.props.navigation.navigate('OrderDetail', {
             orderNo: orderNo
         });
     }
 }
+
+exports.OrderItem = OrderItem;
 //订单列表
 class OrderList extends React.Component {
 
