@@ -16,15 +16,15 @@ let headers = {
     jsversion: "0.1.1",
     utoken: "",
     platform: Platform.OS,
-    clientid: '',
-    version: '',
-    model: '',
-    OSVersion: '',
-    brand: '',
-    channel: '',
-    net: '',
-    bundle: '',
-    xcrole: 0, //0-普通用户,1-店主
+    clientid: "db7b4e395b7a0ec75c6078ddf7db276c588a694f",
+    version: '1.0.5',
+    model: "apple",
+    OSVersion: '11.2',
+    brand: "apple",
+    channel: "appstore",
+    net: 'WIFI',
+    bundle: "13b2bcaba812600af5465c8c649f34d3",
+    xcrole: 0, 
 }
 
 /**
