@@ -11,7 +11,8 @@ import {
     ImageBackground,
     Image,
     FlatList,
-    Platform
+    Platform,
+    Animated
 } from 'react-native';
 import { log, logWarm, logErr } from '../utils/log'
 import request from '../utils/request'
@@ -614,15 +615,21 @@ export default class extends React.Component {
             loadText: "加载中...",
             list: [],
             refreshing: false, //列表刷新用到的变量
+            scrollTop: new Animated.Value(0)
         }
         this.start = 0;
     }
 
     render() {
         return <View style={{ flex: 1 }}>
-            <View style={styles.headerView}>
+            <Animated.View style={[styles.headerView,{
+                backgroundColor: this.state.scrollTop.interpolate({
+                    inputRange: [-100, 0, 100],
+                    outputRange: ['rgba(255,255,255,.5)', 'rgba(255,255,255,0)', 'rgba(255,255,255,1)']
+                })
+            }]}>
                 <SearchHeader share={() => this.share()} navigation={this.props.navigation} />
-            </View>
+            </Animated.View>
             <View style={styles.pageView}>
                 <FlatList ref="flatlist"
                     refreshing={this.state.refreshing}
@@ -660,7 +667,7 @@ export default class extends React.Component {
                         <Text style={styles.loading}>{this.state.loadText}</Text>
                     </View>}
                     onScroll={(e) => this._onScroll(e.nativeEvent)}
-                    scrollEventThrottle={1}
+                    scrollEventThrottle={100}
                     keyExtractor={(goods) => goods.id}
                     data={this.state.list}
                 />
@@ -752,9 +759,10 @@ export default class extends React.Component {
             this.loading = false;
         }
     }
-    //TODO:滚动监听
-    _onScroll() {
-
+    //滚动监听
+    _onScroll(e) {
+        const y = e.contentOffset.y;
+        if (y < 200) this.state.scrollTop.setValue(y)
     }
     //TODO:加入购物车
     addCart() { }
