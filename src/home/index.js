@@ -615,14 +615,15 @@ export default class extends React.Component {
             loadText: "加载中...",
             list: [],
             refreshing: false, //列表刷新用到的变量
-            scrollTop: new Animated.Value(0)
+            scrollTop: new Animated.Value(0),
+            showTop: false
         }
         this.start = 0;
     }
 
     render() {
         return <View style={{ flex: 1 }}>
-            <Animated.View style={[styles.headerView,{
+            <Animated.View style={[styles.headerView, {
                 backgroundColor: this.state.scrollTop.interpolate({
                     inputRange: [-100, 0, 100],
                     outputRange: ['rgba(255,255,255,.5)', 'rgba(255,255,255,0)', 'rgba(255,255,255,1)']
@@ -672,6 +673,10 @@ export default class extends React.Component {
                     data={this.state.list}
                 />
             </View>
+            {this.state.showTop && <TouchableOpacity onPress={()=>this.toTop()}>
+                <Image style={styles.toBtn}
+                    source={{ uri: require("../images/icon-to-top") }} />
+            </TouchableOpacity>}
             <ShareView ref='shareView' types={[SHARETYPE.WEIXIN, SHARETYPE.PENGYOUQUAN, SHARETYPE.LIANJIE, SHARETYPE.ERWEIMA]} />
             <DialogModal ref="dialog" />
         </View>
@@ -763,6 +768,16 @@ export default class extends React.Component {
     _onScroll(e) {
         const y = e.contentOffset.y;
         if (y < 200) this.state.scrollTop.setValue(y)
+        if (y < 500 && this.state.showTop) {
+            this.setState({ showTop: false })
+        }
+        if (y > 500 && !this.state.showTop) {
+            this.setState({ showTop: true })
+        }
+    }
+    //回到顶部
+    toTop(){
+        this.refs.flatlist.scrollToOffset({offset:0})
     }
     //TODO:加入购物车
     addCart() { }
@@ -802,4 +817,11 @@ const styles = StyleSheet.create({
         fontSize: px(28),
         color: "#ccc"
     },
+    toBtn: {
+        width: px(100),
+        height: px(100),
+        position: "absolute",
+        right: 5,
+        bottom: 5
+    }
 })
