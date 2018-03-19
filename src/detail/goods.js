@@ -382,7 +382,9 @@ export default class extends React.Component {
                 goods = await request.get(`/goods/detail.do`, { id: this.id });
             }
             if (!goods.detail.mobile_detail) {
-                goods.detail.mobile_detail.list = [];
+                goods.detail.mobile_detail={
+                    list : []
+                };
             }
             if (goods.detail.mobile_detail.list.length > 0) {
                 goods.detail.mobile_detail.list.map((item) => {
