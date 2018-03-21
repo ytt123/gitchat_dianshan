@@ -1,0 +1,8 @@
+__tests__
+.git
+.vscode
+android
+bundle
+ios
+lib
+node_modules
