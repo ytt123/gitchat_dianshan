@@ -19,12 +19,18 @@ import request from '../utils/request'
 import px from '../utils/px'
 import Swiper from 'react-native-swiper'
 import toast from '../utils/toast'
-import Modules from './floor_modules'
+import { Module } from './floor_modules'
 import ShareView, { SHARETYPE } from '../component/ShareView'
 import { DialogModal } from '../component/ModalView'
 
 const deviceWidth = Dimensions.get('window').width;
-
+const util_cools = {
+    spliceNum(price) { // 价格，整数小数字体大小不一样
+        let p_int = (price + '').split('.')[0]
+        let p_float = ((price * 1 - p_int * 1).toFixed(2) + '').split('.')[1]
+        return [p_int, p_float]
+    },
+}
 /**
  * Banner和快捷入口
  */
@@ -32,8 +38,8 @@ class MyBanner extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            banners: [],
-            quicks: [],
+            banners: this.props.item.bannerList||[],
+            quicks: this.props.item.quickList||[],
             status: false,
         }
     }
@@ -78,26 +84,7 @@ class MyBanner extends React.Component {
             source={{ uri: item.showImg }}
             style={{ width: px(750), height: px(480) }} />
     }
-    componentDidMount() {
-        this.refresh();
-    }
-
-    /**
-     * 刷新列表内容
-     */
-    async refresh() {
-        try {
-            let res = await request.get(`/banner/findBannerAndQuickList.do?categoryId=`);
-            if (res) {
-                this.setState({
-                    banners: res.bannerList || [],
-                    quicks: res.quickList || []
-                })
-            }
-        } catch (e) {
-            toast(e.message);
-        }
-    }
+    
     /**
      * 点击事件
      * @param {*} e 
@@ -171,147 +158,371 @@ const bannerStyle = StyleSheet.create({
         color: "#252426"
     },
 })
-// 价格，整数小数字体大小不一样
-function spliceNum(price) {
-    let p_int = (price + '').split('.')[0]
-    let p_float = ((price * 1 - p_int * 1).toFixed(2) + '').split('.')[1]
-    return [p_int, p_float]
-}
 
 //单个商品组件
 class GoodItem extends React.Component {
-    render() {
-        const { index, goods } = this.props
-        return (
-            <View style={goodStyles.goodsBox}>
-                <View style={[goodStyles.goods, {
-                    borderTopLeftRadius: index % 2 === 0 ? px(0) : px(12),
-                    borderTopRightRadius: index % 2 === 0 ? px(12) : px(0),
-                    borderBottomLeftRadius: index % 2 === 0 ? px(0) : px(12),
-                    borderBottomRightRadius: index % 2 === 0 ? px(12) : px(0),
-                }]}>
-                    <View style={[goodStyles.goods_]}>
-                        <TouchableOpacity
-                            activeOpacity={0.9}
-                            key={goods.id}
-                            onPress={() => this.getDetail()}>
-                            <View>
-                                <Image
-                                    resizeMethod="scale"
-                                    source={{ uri: goods.specImage1 }}
-                                    style={goodStyles.goodsCover}
-                                />
-                                {this.props.goods.limitStock == 0
-                                    ? <View style={goodStyles.goods_img_cover}>
-                                        <Text allowFontScaling={false} style={goodStyles.goods_img_txt}>抢光了</Text>
-                                    </View>
-                                    : null
-                                }
-                                <View style={goodStyles.labels}>
-                                    {goods.labelList && goods.labelList.length > 0 && goods.labelList.map((item) =>
-                                        <Image key={item.labelId} resizeMode="contain" resizeMethod="scale"
-                                            style={[goodStyles.labelImg, { width: px(item.width), height: px(item.height) }]}
-                                            source={{ uri: item.labelLogo }} />
-                                    )}
-                                </View>
-                            </View>
-                            <View style={goodStyles.sessionName}>
-                                <View style={goodStyles.goodsShowNameBox}>
-                                    <Text allowFontScaling={false}
-                                        numberOfLines={1}
-                                        style={goodStyles.goodsShowName}>
-                                        {goods.goodsShowName}
-                                    </Text>
-                                </View>
-                                <View style={goodStyles.goodsShowDesc_}>
-                                    {
-                                        (goods.isInBond == 1 || goods.isForeignSupply == 2) &&
-                                        <View
-                                            style={[goodStyles.flag_, goods.isInBond == 1 ? goodStyles.flagB : goodStyles.flagZ]}>
-                                            <Text
-                                                style={goodStyles.flagTxt}
-                                                allowFontScaling={false}>
-                                                {goods.isInBond == 1 ? '保税' : goods.isForeignSupply == 2 ? '直邮' : ''}
-                                            </Text>
-                                        </View>
-                                    }
-                                    <Text style={goodStyles.goodsShowDesc} allowFontScaling={false}
-                                        numberOfLines={2}>
-                                        {
-                                            (goods.isInBond == 1 || goods.isForeignSupply == 2) &&
-                                            <Text style={goodStyles.flag}
-                                                allowFontScaling={false}>{goods.isInBond == 1 ? '保税' : '直邮'}    </Text>
-                                        }
-                                        {goods.goodsShowDesc}
-                                    </Text>
-                                </View>
-                            </View>
 
-                            <View style={[goodStyles.sessionNoName, goodStyles.sessionNoNameBig, { alignItems: 'center' }]}>
-                                <View style={[goodStyles.sessionPrice, { flexDirection: 'column', alignItems: 'flex-start' }]}>
-                                    <Text allowFontScaling={false}
-                                        style={goodStyles.salePrice}>
-                                        ￥
-                                            <Text allowFontScaling={false}
-                                            style={goodStyles.salePrice_}>
-                                            {spliceNum(goods.salePrice)[0]}
-                                        </Text>.{spliceNum(goods.salePrice)[1]}
-                                    </Text>
-                                    <Text allowFontScaling={false}
-                                        style={goodStyles.marketPrice}>
-                                        ￥{goods.marketPrice}
-                                    </Text>
-                                </View>
-                                <TouchableOpacity
-                                    style={goodStyles.cartCBorder}
-                                    activeOpacity={0.8}
-                                    onPress={() => this.props.addCart(goods.id, 1)}>
-                                    <View style={goodStyles.cartC}>
-                                        <Image
-                                            resizeMode="cover"
-                                            source={{ uri: require('../images/icon-indexCart') }}
-                                            style={goodStyles.cart} />
-                                    </View>
-                                </TouchableOpacity>
+    renderLeft(item) {
+        return <TouchableOpacity activeOpacity={0.9} onPress={() => this.getDetail(item)}>
+            <View style={goodStyles.sGoodL}>
+                <View style={goodStyles.sGoodImage}>
+                    <Image resizeMethod="scale"
+                        source={{ uri: this.props.show ? item.specImage1 : require('../images/img') }}
+                        style={goodStyles.sGoodsCover1}
+                    />
+                    {item.limitStock === 0 &&
+                        <View style={goodStyles.goods_img_cover}>
+                            <Text allowFontScaling={false} style={goodStyles.goods_img_txt}>抢光了</Text>
+                        </View>
+                    }
+                    <View style={goodStyles.labels}>
+                        {item.labelList && item.labelList.length > 0 && item.labelList.map((label) =>
+                            <Image key={label.labelId} resizeMode="contain" resizeMethod="scale"
+                                style={[goodStyles.labelImg, { width: px(label.width), height: px(label.height) }]}
+                                source={{ uri: label.labelLogo }} />
+                        )}
+                    </View>
+                </View>
+                <View style={goodStyles.sessionName}>
+                    <View style={goodStyles.goodsShowNameBox}>
+                        <Text allowFontScaling={false}
+                            numberOfLines={1}
+                            style={goodStyles.goodsShowName}>
+                            {item.goodsShowName}
+                        </Text>
+                    </View>
+                    <View style={goodStyles.goodsShowDesc_}>
+                        {
+                            (item.isInBond == 1 || item.isForeignSupply == 2) &&
+                            <View
+                                style={[goodStyles.flag_, item.isInBond == 1 ? goodStyles.flagB : goodStyles.flagZ]}>
+                                <Text
+                                    style={goodStyles.flagTxt}
+                                    allowFontScaling={false}>
+                                    {item.isInBond == 1 ? '保税' : item.isForeignSupply == 2 ? '直邮' : ''}
+                                </Text>
+                            </View>
+                        }
+                        <Text style={goodStyles.goodsShowDesc} allowFontScaling={false}
+                            numberOfLines={2}>
+                            {
+                                (item.isInBond == 1 || item.isForeignSupply == 2) &&
+                                <Text style={goodStyles.flag}
+                                    allowFontScaling={false}>{item.isInBond == 1 ? '保税' : '直邮'}    </Text>
+                            }
+                            {item.goodsShowDesc}
+                        </Text>
+                    </View>
+                    <View style={goodStyles.sessionNoName}>
+                        <View style={[goodStyles.sessionPrice, { flexDirection: 'column', alignItems: 'flex-start' }]}>
+                            <Text allowFontScaling={false}
+                                style={goodStyles.salePrice}>
+                                ￥<Text allowFontScaling={false}
+                                    style={goodStyles.salePrice_}>
+                                    {util_cools.spliceNum(item.salePrice)[0]}
+                                </Text>.{util_cools.spliceNum(item.salePrice)[1]}
+                            </Text>
+                            <Text allowFontScaling={false}
+                                style={[goodStyles.marketPrice, { paddingLeft: 0 }]}>
+                                ￥{item.marketPrice}
+                            </Text>
+                        </View>
+                        <TouchableOpacity
+                            style={goodStyles.cartCBorder}
+                            activeOpacity={0.8}
+                            onPress={() => this.props.addCart(item.id, 1)}>
+                            <View style={goodStyles.cartC}>
+                                <Image
+                                    resizeMode="cover"
+                                    source={{ uri: require('../images/icon-indexCart') }}
+                                    style={goodStyles.cart} />
                             </View>
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={goodStyles.sLine1}></View>
             </View>
-        )
+        </TouchableOpacity>
     }
-    //跳转商品详情页
-    getDetail() {
-        this.props.navigation.navigate('Goods', {
-            id: this.props.goods.sku ? '' : this.props.goods.id,
-            sku: this.props.goods.sku
-        });
+    renderRight(item) {
+        if (!item) return null;
+        return <TouchableOpacity activeOpacity={0.9} onPress={() => this.getDetail(item)}>
+            <View style={goodStyles.sGoodR}>
+                <View style={goodStyles.sGoodImage}>
+                    <Image resizeMethod="scale"
+                        source={{ uri: this.props.show ? item.specImage1 : require('../images/img') }}
+                        style={goodStyles.sGoodsCover2}
+                    />
+                    {item.limitStock === 0 &&
+                        <View style={goodStyles.goods_img_cover}>
+                            <Text allowFontScaling={false} style={goodStyles.goods_img_txt}>抢光了</Text>
+                        </View>
+                    }
+                    <View style={goodStyles.labels}>
+                        {item.labelList && item.labelList.length > 0 && item.labelList.map((label) =>
+                            <Image key={label.labelId} resizeMode="contain" resizeMethod="scale"
+                                style={[goodStyles.labelImg, { width: px(label.width), height: px(label.height) }]}
+                                source={{ uri: label.labelLogo }} />
+                        )}
+                    </View>
+                </View>
+                <View style={goodStyles.sessionName}>
+                    <View style={goodStyles.goodsShowNameBox}>
+                        <Text allowFontScaling={false}
+                            numberOfLines={1}
+                            style={goodStyles.goodsShowName}>
+                            {item.goodsShowName}
+                        </Text>
+                    </View>
+                    <View style={goodStyles.goodsShowDesc_}>
+                        {
+                            (item.isInBond == 1 || item.isForeignSupply == 2) &&
+                            <View
+                                style={[goodStyles.flag_, item.isInBond == 1 ? goodStyles.flagB : goodStyles.flagZ]}>
+                                <Text
+                                    style={goodStyles.flagTxt}
+                                    allowFontScaling={false}>
+                                    {item.isInBond == 1 ? '保税' : item.isForeignSupply == 2 ? '直邮' : ''}
+                                </Text>
+                            </View>
+                        }
+                        <Text style={goodStyles.goodsShowDesc} allowFontScaling={false}
+                            numberOfLines={2}>
+                            {
+                                (item.isInBond == 1 || item.isForeignSupply == 2) &&
+                                <Text style={goodStyles.flag}
+                                    allowFontScaling={false}>{item.isInBond == 1 ? '保税' : '直邮'}    </Text>
+                            }
+                            {item.goodsShowDesc}
+                        </Text>
+                    </View>
+                    <View style={goodStyles.sessionNoName}>
+                        <View style={[goodStyles.sessionPrice, { flexDirection: 'column', alignItems: 'flex-start' }]}>
+                            <Text allowFontScaling={false}
+                                style={goodStyles.salePrice}>
+                                ￥<Text allowFontScaling={false}
+                                    style={goodStyles.salePrice_}>
+                                    {util_cools.spliceNum(item.salePrice)[0]}
+                                </Text>.{util_cools.spliceNum(item.salePrice)[1]}
+                            </Text>
+                            <Text allowFontScaling={false}
+                                style={[goodStyles.marketPrice, { paddingLeft: 0 }]}>
+                                ￥{item.marketPrice}
+                            </Text>
+                        </View>
+                        <TouchableOpacity
+                            style={goodStyles.cartCBorder}
+                            activeOpacity={0.8}
+                            onPress={() => this.props.addCart(item.id, 1)}>
+                            <View style={goodStyles.cartC}>
+                                <Image
+                                    resizeMode="cover"
+                                    source={{ uri: require('../images/icon-indexCart') }}
+                                    style={goodStyles.cart} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={goodStyles.sLine2}></View>
+            </View>
+        </TouchableOpacity>
     }
-    //状态变量
+    renderBig(item) {
+        if (!item) return null;
+        return <TouchableOpacity activeOpacity={0.9}
+            onPress={() => this.getDetail(item)}>
+            <View style={goodStyles.bGood}>
+                <View style={{ width: deviceWidth, alignItems: 'center', paddingTop: px(20) }}>
+                    <View style={goodStyles.imageBox}>
+                        <Image
+                            resizeMethod="scale"
+                            source={{ uri: this.props.show ? item.image : require('../images/img2') }}
+                            style={goodStyles.goodsCoverBig} />
+                    </View>
+                    {item.limitStock === 0 &&
+                        <View style={goodStyles.goods_img_coverBig}>
+                            <Text allowFontScaling={false} style={goodStyles.goods_img_txt}>抢光了</Text>
+                        </View>
+                    }
+                    <View style={goodStyles.labels2}>
+                        {item.labelList && item.labelList.length > 0 && item.labelList.map((label) =>
+                            <Image key={label.labelId}
+                                resizeMode="contain" resizeMethod="scale"
+                                style={[goodStyles.labelImg, { width: px(label.width), height: px(label.height) }]}
+                                source={{ uri: label.labelLogo }} />
+                        )}
+                    </View>
+                </View>
+                <View style={goodStyles.sessionName}>
+                    <View style={goodStyles.goodsShowNameBox}>
+                        <Text allowFontScaling={false}
+                            numberOfLines={1}
+                            style={goodStyles.goodsShowName}>
+                            {item.goodsShowName}
+                        </Text>
+                    </View>
+                    <View style={goodStyles.goodsShowDesc_}>
+                        {
+                            (item.isInBond == 1 || item.isForeignSupply == 2) &&
+                            <View
+                                style={[goodStyles.flag_, item.isInBond == 1 ? goodStyles.flagB : goodStyles.flagZ]}>
+                                <Text
+                                    style={goodStyles.flagTxt}
+                                    allowFontScaling={false}>
+                                    {item.isInBond == 1 ? '保税' : item.isForeignSupply == 2 ? '直邮' : ''}
+                                </Text>
+                            </View>
+                        }
+                        <Text style={goodStyles.goodsShowDesc} allowFontScaling={false}
+                            numberOfLines={2}>
+                            {
+                                (item.isInBond == 1 || item.isForeignSupply == 2) &&
+                                <Text style={goodStyles.flag}
+                                    allowFontScaling={false}>{item.isInBond == 1 ? '保税' : '直邮'}    </Text>
+
+                            }
+                            {item.goodsShowDesc}
+                        </Text>
+                    </View>
+                </View>
+                <View style={[goodStyles.sessionNoName, goodStyles.sessionNoNameBig, { alignItems: 'center' }]}>
+                    <View style={[goodStyles.sessionPrice, { flexDirection: 'row', alignItems: 'flex-end' }]}>
+                        <Text allowFontScaling={false}
+                            style={goodStyles.salePrice}>
+                            ￥<Text allowFontScaling={false}
+                                style={goodStyles.salePrice_}>
+                                {util_cools.spliceNum(item.salePrice)[0]}
+                            </Text>.{util_cools.spliceNum(item.salePrice)[1]}
+                        </Text>
+                        <Text allowFontScaling={false}
+                            style={[goodStyles.marketPrice, { paddingLeft: px(12) }]}>
+                            ￥{item.marketPrice}
+                        </Text>
+                    </View>
+                    <TouchableOpacity
+                        style={goodStyles.cartCBorder}
+                        activeOpacity={0.8}
+                        onPress={() => this.props.addCart(item.id, 1)}>
+                        <View style={goodStyles.cartC}>
+                            <Image
+                                resizeMode="cover"
+                                source={{ uri: require('../images/icon-indexCart') }}
+                                style={goodStyles.cart} />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </TouchableOpacity>
+    }
+    render() {
+        const { item } = this.props;
+        if (!item) return null;
+        if (item.data2 && item.data2.id) {
+            return <View onLayout={(e => this.onLayout(e.nativeEvent))} style={[goodStyles.goodsBox1, goodStyles.goodsBox3]}>
+                {this.renderLeft(item.data)}
+                {this.renderRight(item.data2)}
+            </View>
+        }
+        return <View onLayout={(e => this.onLayout(e.nativeEvent))} style={goodStyles.goodsBox2}>
+            {this.renderBig(item.data)}
+        </View>
+    }
     shouldUpdate = true;
-    //判断是否需要刷新
     shouldComponentUpdate() {
         if (!this.shouldUpdate) return false;
         return !(this.shouldUpdate = false);
     }
-    componentWillUpdate(){
-        console.log("=======刷新=======")
+    onLayout(e) {
+        this.props.onLayout && this.props.onLayout(e);
+    }
+    componentWillReceiveProps(pp) {
+        if (pp.show != this.props.show) this.shouldUpdate = true;
+    }
+    getDetail(goods) {
+        this.props.navigation.navigate('DetailPage', {
+            id: goods.sku ? '' : goods.id,
+            sku: goods.sku
+        });
+    }
+    sharePage(goods) {
+        this.props.shareEvent && this.props.shareEvent(goods);
     }
 }
 const goodStyles = StyleSheet.create({
-    goodsBox: {},
-    goods: {
-        width: px(367),
-        marginRight: px(16),
-        marginBottom: px(16),
+    goodsBox1: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        width: deviceWidth,
+        height: px(670),
         overflow: 'hidden',
     },
-    goods_: {
-        width: px(367),
-        flexDirection: 'column',
-        alignItems: 'center',
+    goodsBox3: {
+        height: px(640),
+    },
+    goodsBox2: {
+        width: deviceWidth,
+        height: px(705),
+        overflow: 'hidden',
+    },
+    bGood: {
+        width: deviceWidth,
+        overflow: 'hidden',
         backgroundColor: '#fff',
-        paddingBottom: px(24)
+        height: px(686)
+    },
+    sLine1: {
+        width: px(367),
+        height: px(24),
+        backgroundColor: '#fefefe',
+        borderBottomRightRadius: px(12),
+    },
+    sLine2: {
+        width: px(367),
+        height: px(24),
+        backgroundColor: '#fefefe',
+        borderBottomLeftRadius: px(12),
+    },
+    sGoodL: {
+        width: px(367),
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: px(12),
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: px(12),
+        overflow: 'hidden',
+        ...Platform.select({
+            ios: {
+                borderColor: "#fff",
+            }
+        })
+    },
+    sGoodR: {
+        width: px(367),
+        borderTopLeftRadius: px(12),
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: px(12),
+        borderBottomRightRadius: 0,
+        overflow: 'hidden',
+        ...Platform.select({
+            ios: {
+                borderColor: "#fff",
+            }
+        })
+    },
+    sGoodImage: {
+        width: px(367),
+        height: px(367),
+    },
+    sGoodsCover1: {
+        width: px(367),
+        height: px(367),
+        overflow: 'hidden',
+        borderTopRightRadius: px(12)
+    },
+    sGoodsCover2: {
+        width: px(367),
+        height: px(367),
+        overflow: 'hidden',
+        borderTopLeftRadius: px(12)
     },
     goodsCover: {
         width: px(367),
@@ -371,6 +582,13 @@ const goodStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
     },
+    labels2: {
+        position: 'absolute',
+        top: px(28),
+        left: px(28),
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+    },
     labelImg: {
         width: px(60),
         height: px(60),
@@ -380,7 +598,7 @@ const goodStyles = StyleSheet.create({
         paddingLeft: px(20),
         paddingRight: px(20),
         paddingTop: px(20),
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
     },
     goodsShowNameBox: {
         height: px(32),
@@ -394,17 +612,24 @@ const goodStyles = StyleSheet.create({
         position: 'relative'
     },
     flag_: {
-        position: 'absolute',
-        zIndex: 1,
         paddingLeft: px(5),
         paddingRight: px(5),
-        backgroundColor: '#000',
-        height: px(24),
-        borderRadius: px(4),
-        overflow: 'hidden',
-        marginTop: px(3),
+        height: px(27),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: "absolute",
+        left: 0,
+        ...Platform.select({
+            ios: {
+                top: px(1),
+            },
+            android: {
+                top: px(4)
+            }
+        }),
+        zIndex: 100,
+        borderRadius: px(4),
+        overflow: 'hidden'
     },
     flagB: {
         backgroundColor: '#56beec',
@@ -414,14 +639,16 @@ const goodStyles = StyleSheet.create({
     },
     flagTxt: {
         color: '#fff',
-        fontSize: px(18)
+        fontSize: px(18),
+        includeFontPadding: false,
     },
     goodsShowDesc: {
         fontSize: px(24),
         color: '#858385'
     },
     flag: {
-        fontSize: px(18)
+        fontSize: px(18),
+        color: '#fff'
     },
     salePrice: {
         fontSize: px(26),
@@ -443,20 +670,21 @@ const goodStyles = StyleSheet.create({
         textDecorationLine: 'line-through'
     },
     sessionNoName: {
-        paddingLeft: px(20),
-        paddingRight: px(20),
-        backgroundColor: '#fff'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     sessionNoNameBig: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingHorizontal: px(20)
     },
     operator: {
         width: px(320),
         height: px(52),
-        position: 'relative',
         flexDirection: 'row',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        justifyContent: 'center',
     },
     operatorBg: {
         width: px(320),
@@ -644,46 +872,65 @@ export default class extends React.Component {
             <View style={styles.pageView}>
                 <FlatList ref="flatlist"
                     refreshing={this.state.refreshing}
-                    numColumns={2}//2列
+                    numColumns={1}//1列
                     onRefresh={() => this.refresh()}//刷新调用的方法
-                    onEndReached={() => this.nextPage()}//拉倒底部加载下一页
-                    ListHeaderComponent={<View style={{ backgroundColor: "#fff" }}>
-                        <MyBanner ref="banner" navigation={this.props.navigation} />
-                        <Modules ref="module"
-                            navigation={this.props.navigation}
-                            goOtherPage={this.goOtherPage.bind(this)} />
-                        <View style={{
-                            height: px(100),
-                            backgroundColor: '#f2f2f2',
-                            paddingLeft: px(20)
-                        }}>
-                            <Image
-                                style={{
-                                    height: px(100),
-                                    width: px(280)
-                                }}
-                                source={{ uri: require('../images/index-title') }}
+                    onEndReached={() => this.loadNext()}//拉倒底部加载下一页
+                    renderItem={({ item, index }) => {
+                        if (item.type === 'banner') {
+                            return <MyBanner ref='banner' id={this.props.id}
+                                item={item}
+                                refresh={this.state.refreshing}
+                                navigation={this.props.navigation}
+                                onChangeF={this.props.onChangeF} />
+                        }
+                        if (item.type === 'module') {
+                            return <Module item={item} index={item.key}
+                                ref={"item_" + index}
+                                show={item.show}
+                                onLayout={e => this.onLayout(e, index)}
+                                navigation={this.props.navigation}
+                                onChangeF={this.props.onChangeF}
+                                goOtherPage={this.goOtherPage.bind(this)} />
+                        }
+                        if (item.type === 'title') {
+                            return <View style={{
+                                height: px(100),
+                                backgroundColor: '#f2f2f2',
+                                paddingLeft: px(20)
+                            }}>
+                                <Image
+                                    style={{ height: px(100), width: px(280) }}
+                                    source={{ uri: require('../images/index-title') }}
+                                />
+                            </View>
+                        }
+                        if (item.type === 'product') {
+                            return <GoodItem
+                                ref={"item_" + index}
+                                show={item.show}
+                                shareEvent={() => { }}
+                                index={item.key}
+                                item={item}
+                                onLayout={e => this.onLayout(e, index)}
+                                isLogin={false}
+                                refresh={this.state.refreshing}
+                                shop={this.props.shop}
+                                navigation={this.props.navigation}
+                                addCart={(id, num) => this.addCart(id, num)}
                             />
-                        </View>
-                    </View>}
-                    renderItem={({ item, index }) =>
-                        <GoodItem
-                            addCart={this.addCart.bind(this)}
-                            index={index}
-                            goods={item}
-                            navigation={this.props.navigation}
-                        />
+                        }
+                    }
                     }
                     ListFooterComponent={<View>
                         <Text style={styles.loading}>{this.state.loadText}</Text>
                     </View>}
                     onScroll={(e) => this._onScroll(e.nativeEvent)}
                     scrollEventThrottle={100}
-                    keyExtractor={(goods) => goods.id}
+                    keyExtractor={(goods) => goods.index}
                     data={this.state.list}
                 />
             </View>
-            {this.state.showTop && <TouchableOpacity onPress={()=>this.toTop()}>
+            {this.state.showTop && <TouchableOpacity onPress={() => this.toTop()}>
                 <Image style={styles.toBtn}
                     source={{ uri: require("../images/icon-to-top") }} />
             </TouchableOpacity>}
@@ -692,88 +939,133 @@ export default class extends React.Component {
         </View>
     }
     async componentDidMount() {
-        this.loadShop();
+        this.loadBanner();
     }
+    //计算模板的高度
+    onLayout(e, index) {
+        this.layout[index].h = e.layout.height
+    }
+
+    step = 0;
+    start = 0;
+    loading = false;
+    totalPages = 2;
+    layout = [];
+    //加载banner数据,设置类型为banner
+    async loadBanner() {
+        try {
+            let res = await request.get(`/banner/findBannerAndQuickList.do?categoryId=`);
+            res.type = "banner";
+            res.index = "banner";
+            res.tt = Date.now();
+            let h = 0;
+            if (res.bannerList.length > 0) {
+                h = px(480);
+            }
+            if (res.quickList.length > 0) {
+                h += px(210)
+            }
+            this.layout[0] = { h };
+            this.setState({ list: [res] });
+        } catch (e) {
+            // toast(e.message);
+        } finally {
+            this.step = 1;
+            this.loadNext();
+        }
+    }
+    //加载下一页,这里判断到底应该加载哪一块
+    async loadNext() {
+        if (this.step === 1) this.getModules();
+        if (this.step === 2) this.getNextProducts();
+    }
+    //获取楼层
+    async getModules() {
+        if (this.loading) return;
+        this.loading = true;
+        let list = [];
+        try {
+            let moduleList = await request.get(`/module/findModuleListV2.do?categoryId=`);
+            if (moduleList.constructor === Array) {
+                moduleList.forEach((item, key) => {
+                    item.type = 'module';
+                    item.index = 'module_' + item.moduleId;
+                    item.key = key;
+                    list.push(item);
+                    this.layout.push({ h: 0 });
+                })
+            }
+        } catch (e) {
+            // toast(e.message);
+        } finally {
+            this.step = 2;
+            this.loading = false;
+            const list1 = this.state.list[0];
+            const tit = { type: "title", index: "title" };
+            list.push(tit);
+            this.layout.push({ h: px(100) });
+            this.setState({ list: this.state.list.concat(list) });
+        }
+    }
+    productSH = px(654)
+    productBH = px(695)
+
+    //加载商品
+    async getNextProducts() {
+        if (this.start >= this.totalPages) return;
+        if (this.loading) return;
+        this.loading = true;
+        try {
+            let res = await request.get(`/goods/list.do?limit=20&start=${this.start}&categoryId=`);
+            this.totalPages = res.totalPages;
+            let list = [];
+            for (let index = 0, j = res.items.length; index < j; index++) {
+                const item = res.items[index];
+                if (!item) continue;
+                let temp = {
+                    type: "product",
+                    index: "product_" + item.sku + this.start,
+                    key: index,
+                    show:true
+                };
+                temp.data = item;
+                let h = this.productSH;
+                if ((index + 1) % 5 !== 0) {
+                    temp.data2 = Object.assign({}, res.items[index + 1]);
+                    h = this.productBH;
+                    res.items[index + 1] = null;
+                }
+                this.layout.push({ h });
+                list.push(temp);
+            }
+            this.setState({ list: this.state.list.concat(list) });
+            if (res.items.length < 20) this.totalPages = 1;
+        } catch (e) {
+            // toast(e.message);
+        } finally {
+            this.start++;
+            this.loading = false;
+            if (this.start >= this.totalPages) {
+                this.setState({ loadText: "别扯啦,到底了..." })
+            }
+            // if (this.start < 2) {
+            //     this.showImage(0);
+            // }
+        }
+    }
+
     share() {
         this.refs.shareView.open();
     }
-    //刷新方法
-    async refresh() {
-        this.isEnd = false;
-        this.setState({
-            refreshing: true
-        })
-        try {
-            await this.refs.banner.refresh()
-            await this.refs.module.refresh();
-            await this.loadShop();
-        } finally {
-            this.setState({
-                refreshing: false
-            });
-        }
-    }
-    //加载商品第一页
-    async loadShop() {
+    //刷新
+    refresh() {
+        this.step = 0;
         this.start = 0;
-        try {
-            let list = await request.get(`/goods/list.do?limit=20&start=${this.start}&categoryId=`)
-            if (!list.items || list.items.length == 0) {
-                this.setState({
-                    loadText: "别扯啦，到底了"
-                });
-                this.isEnd = true;
-                return;
-            }
-            if (list.totalPages < 2) {
-                this.setState({
-                    loadText: list.items.length > 1 ? "别扯啦，到底了" : ''
-                });
-                this.isEnd = true;
-            }
-            this.setState({
-                list: list.items,
-                total: list.total
-            });
-        } catch (e) {
-            toast(e.message);
-            this.isEnd = true;
-            this.setState({
-                loadText: this.state.items.length > 1 ? "别扯啦，到底了" : ''
-            });
-        }
         this.loading = false;
+        this.totalPages = 2;
+        this.loadBanner();
     }
-    //加载商品其他页
-    async nextPage() {
-        if (this.loading || this.isEnd) return;
-        this.loading = true;
-        try {
-            if (!this.start) this.start = 0;
-            this.start = this.start + 1;
-            let res = await request.get(`/goods/list.do?limit=20&start=${this.start}&categoryId=`);//this.start + 1
-            this.setState({
-                list: this.state.list.concat(res.items),
-                total: res.total
-            });
-            if (!res.items || res.items.length == 0 || res.totalPages <= this.start + 1) {
-                this.setState({
-                    loadText: "别扯啦，到底了"
-                });
-                this.isEnd = true;
-                return;
-            }
 
-        } catch (e) {
-            toast(e.message);
-            this.isEnd = true;
-            this.setState({
-                loadText: "别扯啦，到底了"
-            });
-        } finally {
-            this.loading = false;
-        }
-    }
     //滚动监听
     _onScroll(e) {
         const y = e.contentOffset.y;
@@ -786,8 +1078,8 @@ export default class extends React.Component {
         }
     }
     //回到顶部
-    toTop(){
-        this.refs.flatlist.scrollToOffset({offset:0})
+    toTop() {
+        this.refs.flatlist.scrollToOffset({ offset: 0 })
     }
     //TODO:加入购物车
     addCart() { }
