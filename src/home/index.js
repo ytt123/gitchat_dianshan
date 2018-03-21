@@ -287,6 +287,16 @@ class GoodItem extends React.Component {
             sku: this.props.goods.sku
         });
     }
+    //状态变量
+    shouldUpdate = true;
+    //判断是否需要刷新
+    shouldComponentUpdate() {
+        if (!this.shouldUpdate) return false;
+        return !(this.shouldUpdate = false);
+    }
+    componentWillUpdate(){
+        console.log("=======刷新=======")
+    }
 }
 const goodStyles = StyleSheet.create({
     goodsBox: {},
