@@ -1030,7 +1030,7 @@ export default class extends React.Component {
                     type: "product",
                     index: "product_" + item.sku + this.start,
                     key: index,
-                    show:true
+                    show:false
                 };
                 temp.data = item;
                 let h = this.productSH;
@@ -1069,10 +1069,36 @@ export default class extends React.Component {
         this.totalPages = 2;
         this.loadBanner();
     }
+    //定时器
+    timer = null;
+    showImage(index) {
+        if (this.timer) return;
+        this.timer = setTimeout(() => {
+            // console.log("延迟显示:当前第" + index + "行");
+            let list = this.state.list.filter((item, i) => {
+                item.show = i >= index - 2 && i < index + 5;
+                return item;
+            })
+            // this.shouldComponentUpdate = true;
+            this.setState({ list })
+            if (this.timer) clearTimeout(this.timer);
+            this.timer = null;
+        }, 200);
+    }
 
     //滚动监听
     _onScroll(e) {
         const y = e.contentOffset.y;
+        let index = 0;
+        let curr = 0;
+        while (y > curr) {
+            if (!this.layout[index]) break;
+            curr += this.layout[index].h;
+            index++;
+        }
+        // console.log("当前第" + index + "行");
+        this.showImage(index);
+
         if (y < 200) this.state.scrollTop.setValue(y)
         if (y < 500 && this.state.showTop) {
             this.setState({ showTop: false })
