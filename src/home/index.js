@@ -959,12 +959,15 @@ export default class extends React.Component {
             res.index = "banner";
             res.tt = Date.now();
             let h = 0;
+            //判断是否存在banner
             if (res.bannerList.length > 0) {
                 h = px(480);
             }
+            //判断是否存在快捷按钮
             if (res.quickList.length > 0) {
                 h += px(210)
             }
+             //添加高度信息
             this.layout[0] = { h };
             this.setState({ list: [res] });
         } catch (e) {
@@ -1001,6 +1004,7 @@ export default class extends React.Component {
             this.step = 2;
             this.loading = false;
             const list1 = this.state.list[0];
+            //这里加入一个单独的产品头部图片
             const tit = { type: "title", index: "title" };
             list.push(tit);
             this.layout.push({ h: px(100) });
