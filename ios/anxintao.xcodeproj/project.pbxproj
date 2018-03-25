@@ -52,6 +52,10 @@
 		C862C1594CC04C32A80D5BB7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15A671837D914C18A2DF1A49 /* UIKit.framework */; };
 		D8AC1FBAE675424BBAF84F40 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DA890B4E5A4F60B0735E70 /* libFastImage.a */; };
 		DEB5AB315645488F901009D5 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58E2804784445F38FB5BC4F /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F7094C3E2067AEA700925DDB /* UMAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7094C132067AEA700925DDB /* UMAnalytics.framework */; };
+		F7094C402067AEE300925DDB /* UMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7094C3F2067AEE300925DDB /* UMCommon.framework */; };
+		F7094C432067AEFD00925DDB /* SecurityEnvSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7094C412067AEFD00925DDB /* SecurityEnvSDK.framework */; };
+		F7094C442067AEFD00925DDB /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7094C422067AEFD00925DDB /* UTDID.framework */; };
 		F7159F3D2056935100A6BF36 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F3A205692DB00A6BF36 /* libRCTWeChat.a */; };
 		F7159F3F2056938300A6BF36 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F3E2056938300A6BF36 /* SystemConfiguration.framework */; };
 		F7159F412056939700A6BF36 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F402056939700A6BF36 /* CoreTelephony.framework */; };
@@ -419,6 +423,10 @@
 		E24CFAD8FCD5436693BF2655 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		E372FB5EC918476593668FCA /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWeChat.xcodeproj; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; };
 		EABB1D96DFE0463A9DEF6CDA /* libRCTJCoreModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTJCoreModule.a; sourceTree = "<group>"; };
+		F7094C132067AEA700925DDB /* UMAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMAnalytics.framework; sourceTree = "<group>"; };
+		F7094C3F2067AEE300925DDB /* UMCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommon.framework; sourceTree = "<group>"; };
+		F7094C412067AEFD00925DDB /* SecurityEnvSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SecurityEnvSDK.framework; sourceTree = "<group>"; };
+		F7094C422067AEFD00925DDB /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		F7159F3E2056938300A6BF36 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F7159F402056939700A6BF36 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		F7159F42205693BB00A6BF36 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -467,13 +475,17 @@
 				B3C5D2B5C36D4FC1A01ABFA8 /* libRCTJCoreModule.a in Frameworks */,
 				6921B44989B14B23B8B9E1D7 /* libRCTJPushModule.a in Frameworks */,
 				DEB5AB315645488F901009D5 /* UserNotifications.framework in Frameworks */,
+				F7094C402067AEE300925DDB /* UMCommon.framework in Frameworks */,
+				F7094C442067AEFD00925DDB /* UTDID.framework in Frameworks */,
 				1D06341701AB4EEC89008DAB /* Security.framework in Frameworks */,
 				8BB1244757344815AF610C50 /* CFNetwork.framework in Frameworks */,
 				394CE1AD11DD4C36BE4C06B8 /* CoreFoundation.framework in Frameworks */,
 				2716A8E38BE34CB2AA530A12 /* Foundation.framework in Frameworks */,
 				C862C1594CC04C32A80D5BB7 /* UIKit.framework in Frameworks */,
 				2948AD0588624611B73EC5BF /* libresolv.tbd in Frameworks */,
+				F7094C432067AEFD00925DDB /* SecurityEnvSDK.framework in Frameworks */,
 				1E88E6C3A6914D5C8E09552B /* CoreGraphics.framework in Frameworks */,
+				F7094C3E2067AEA700925DDB /* UMAnalytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,6 +704,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F7094C412067AEFD00925DDB /* SecurityEnvSDK.framework */,
+				F7094C422067AEFD00925DDB /* UTDID.framework */,
+				F7094C3F2067AEE300925DDB /* UMCommon.framework */,
 				13B07FAE1A68108700A75B9A /* anxintao */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* anxintaoTests */,
@@ -727,6 +742,7 @@
 		F7159EF7205692D500A6BF36 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				F7094C132067AEA700925DDB /* UMAnalytics.framework */,
 				21DA890B4E5A4F60B0735E70 /* libFastImage.a */,
 				B9EAD5C546B54244BEF85BB3 /* libyoga.a */,
 				51BA53281DE846C19BBEF84A /* libcxxreact.a */,
@@ -1462,6 +1478,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
@@ -1486,6 +1506,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",

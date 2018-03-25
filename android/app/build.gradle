@@ -145,14 +145,18 @@ dependencies {
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
     compile project(':react-native-fast-image')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:+"  // From node_modules
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.facebook.react:react-native:+'
+    // From node_modules
     compile project(':RCTWeChat')
-
-    compile project(':jpush-react-native')  // 添加 jpush 依赖
-    compile project(':jcore-react-native')  // 添加 jcore 依赖
-    
+    compile project(':jpush-react-native')
+    // 添加 jpush 依赖
+    compile project(':jcore-react-native')
+    // 添加 jcore 依赖
+    compile files('src/main/libs/umeng-common-1.4.4.jar')
+    compile files('src/main/libs/umeng-analytics-7.4.4.jar')
+    compile files('src/main/libs/utdid4all-1.1.5.3_proguard.jar')
 }
 
 // Run this once to be able to run the application with BUCK

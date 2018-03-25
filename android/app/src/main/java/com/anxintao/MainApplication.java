@@ -10,6 +10,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.theweflex.react.WeChatPackage;
+import com.umeng.commonsdk.UMConfigure;
+
 import cn.jpush.reactnativejpush.JPushPackage;   // <--   导入 JPushPackage
 
 import java.util.Arrays;
@@ -54,5 +56,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, "1fe6a20054bcef865eeb0991ee84525b");
+    
   }
 }
