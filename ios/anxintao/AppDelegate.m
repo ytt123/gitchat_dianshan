@@ -17,6 +17,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
+#import <UMAnalytics/MobClick.h>
+#import <UMCommon/UMConfigure.h>
 
 @implementation AppDelegate
 
@@ -76,6 +78,12 @@ sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
                         channel:nil apsForProduction:nil];
 
   NSURL *jsCodeLocation;
+
+  [UMConfigure setLogEnabled:YES];
+  [UMConfigure initWithAppkey:@"599d6d81c62dca07c5001db6" channel:@"App Store"];
+  //统计
+  [MobClick setScenarioType:E_UM_NORMAL];
+  
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
