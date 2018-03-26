@@ -142,6 +142,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-update')
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
     compile project(':react-native-fast-image')
