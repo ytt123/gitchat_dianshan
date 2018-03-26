@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">anxintao</string>
+    <string name="title_activity_load">LoadActivity</string>
 </resources>
