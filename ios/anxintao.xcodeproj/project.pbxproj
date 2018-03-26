@@ -64,6 +64,7 @@
 		F7159F43205693BB00A6BF36 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F42205693BB00A6BF36 /* libsqlite3.0.tbd */; };
 		F7159F45205693CB00A6BF36 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F44205693CB00A6BF36 /* libc++.tbd */; };
 		F7159F47205693D400A6BF36 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F46205693D400A6BF36 /* libz.tbd */; };
+		F7C55AB12068FE7800F86B33 /* FileHash.m in Sources */ = {isa = PBXBuildFile; fileRef = F7C55AB02068FE7800F86B33 /* FileHash.m */; };
 		FF084C2865564E478DF68FDB /* libyoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EAD5C546B54244BEF85BB3 /* libyoga.a */; };
 /* End PBXBuildFile section */
 
@@ -436,6 +437,8 @@
 		F7159F42205693BB00A6BF36 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		F7159F44205693CB00A6BF36 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		F7159F46205693D400A6BF36 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		F7C55AAF2068FE7800F86B33 /* FileHash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileHash.h; sourceTree = "<group>"; };
+		F7C55AB02068FE7800F86B33 /* FileHash.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileHash.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -602,6 +605,7 @@
 		13B07FAE1A68108700A75B9A /* anxintao */ = {
 			isa = PBXGroup;
 			children = (
+				F7C55A7A2068FD0700F86B33 /* Utils */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -794,6 +798,15 @@
 				F71B19632065124D00BB14CE /* libRCTJCoreModule.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F7C55A7A2068FD0700F86B33 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F7C55AAF2068FE7800F86B33 /* FileHash.h */,
+				F7C55AB02068FE7800F86B33 /* FileHash.m */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1359,6 +1372,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				F7C55AB12068FE7800F86B33 /* FileHash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
