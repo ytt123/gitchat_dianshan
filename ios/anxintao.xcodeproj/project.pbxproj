@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -48,6 +49,7 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B3C5D2B5C36D4FC1A01ABFA8 /* libRCTJCoreModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EABB1D96DFE0463A9DEF6CDA /* libRCTJCoreModule.a */; };
 		C2F8CF7507FA4D4494830B57 /* libthird-party.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D67B87F006444D29A34B3AC4 /* libthird-party.a */; };
+		C68883D78C1B4445972A7D1A /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA008EDE3A040FD89C83EAD /* libRCTHotUpdate.a */; };
 		C862C1594CC04C32A80D5BB7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15A671837D914C18A2DF1A49 /* UIKit.framework */; };
 		D8AC1FBAE675424BBAF84F40 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DA890B4E5A4F60B0735E70 /* libFastImage.a */; };
 		DEB5AB315645488F901009D5 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58E2804784445F38FB5BC4F /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -63,8 +65,8 @@
 		F7159F43205693BB00A6BF36 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F42205693BB00A6BF36 /* libsqlite3.0.tbd */; };
 		F7159F45205693CB00A6BF36 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F44205693CB00A6BF36 /* libc++.tbd */; };
 		F7159F47205693D400A6BF36 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7159F46205693D400A6BF36 /* libz.tbd */; };
+		F78B5AD72068A13200CF03A8 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F78B5AD62068A13200CF03A8 /* libbz2.1.0.tbd */; };
 		FF084C2865564E478DF68FDB /* libyoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9EAD5C546B54244BEF85BB3 /* libyoga.a */; };
-		C68883D78C1B4445972A7D1A /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA008EDE3A040FD89C83EAD /* libRCTHotUpdate.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -376,6 +378,13 @@
 			remoteGlobalIDString = 6280980A1CEDC407000D3A81;
 			remoteInfo = RCTJPushModule;
 		};
+		F78B5AD42068A10000CF03A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBA4FCBED8A64B4B857739B1 /* RCTHotUpdate.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 91C5EFFF1C76ECA90037E727;
+			remoteInfo = RCTHotUpdate;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -412,6 +421,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7E7BFC62779E427481E74D53 /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8AA008EDE3A040FD89C83EAD /* libRCTHotUpdate.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTHotUpdate.a; sourceTree = "<group>"; };
 		8C474C1C4D7346A8BF35A494 /* libjschelpers.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libjschelpers.a; sourceTree = "<group>"; };
 		A56742D18DD444FF972B3B75 /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -425,6 +435,7 @@
 		E24CFAD8FCD5436693BF2655 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		E372FB5EC918476593668FCA /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWeChat.xcodeproj; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; };
 		EABB1D96DFE0463A9DEF6CDA /* libRCTJCoreModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTJCoreModule.a; sourceTree = "<group>"; };
+		EBA4FCBED8A64B4B857739B1 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		F7094C452067B30900925DDB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		F7094C472067B32300925DDB /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		F7094C492067B75B00925DDB /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
@@ -436,8 +447,7 @@
 		F7159F42205693BB00A6BF36 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		F7159F44205693CB00A6BF36 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		F7159F46205693D400A6BF36 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		EBA4FCBED8A64B4B857739B1 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; name = "RCTHotUpdate.xcodeproj"; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		8AA008EDE3A040FD89C83EAD /* libRCTHotUpdate.a */ = {isa = PBXFileReference; name = "libRCTHotUpdate.a"; path = "libRCTHotUpdate.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		F78B5AD62068A13200CF03A8 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -453,11 +463,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F78B5AD72068A13200CF03A8 /* libbz2.1.0.tbd in Frameworks */,
+				F7159F47205693D400A6BF36 /* libz.tbd in Frameworks */,
 				F7094C4D2067B75B00925DDB /* UTDID.framework in Frameworks */,
 				F7094C4E2067B75B00925DDB /* SecurityEnvSDK.framework in Frameworks */,
 				F7094C4F2067B75B00925DDB /* UMCommon.framework in Frameworks */,
 				F7094C502067B75B00925DDB /* UMAnalytics.framework in Frameworks */,
-				F7159F47205693D400A6BF36 /* libz.tbd in Frameworks */,
 				F7159F45205693CB00A6BF36 /* libc++.tbd in Frameworks */,
 				F7094C482067B32300925DDB /* libsqlite3.tbd in Frameworks */,
 				F7094C462067B30900925DDB /* ImageIO.framework in Frameworks */,
@@ -642,6 +653,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F78B5AD62068A13200CF03A8 /* libbz2.1.0.tbd */,
 				F7094C4A2067B75B00925DDB /* SecurityEnvSDK.framework */,
 				F7094C4C2067B75B00925DDB /* UMAnalytics.framework */,
 				F7094C4B2067B75B00925DDB /* UMCommon.framework */,
@@ -763,6 +775,7 @@
 				4594124D2134408E82021938 /* libdouble-conversion.a */,
 				EABB1D96DFE0463A9DEF6CDA /* libRCTJCoreModule.a */,
 				714F1AC60C9541F4998E0BDC /* libRCTJPushModule.a */,
+				8AA008EDE3A040FD89C83EAD /* libRCTHotUpdate.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -796,6 +809,14 @@
 			isa = PBXGroup;
 			children = (
 				F71B19632065124D00BB14CE /* libRCTJCoreModule.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F78B5AD12068A10000CF03A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F78B5AD52068A10000CF03A8 /* libRCTHotUpdate.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -930,6 +951,10 @@
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
+				},
+				{
+					ProductGroup = F78B5AD12068A10000CF03A8 /* Products */;
+					ProjectRef = EBA4FCBED8A64B4B857739B1 /* RCTHotUpdate.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302BC1ABCB91800DB3ED1 /* Products */;
@@ -1279,6 +1304,13 @@
 			fileType = archive.ar;
 			path = libRCTJPushModule.a;
 			remoteRef = F71B19652065124D00BB14CE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F78B5AD52068A10000CF03A8 /* libRCTHotUpdate.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTHotUpdate.a;
+			remoteRef = F78B5AD42068A10000CF03A8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

@@ -19,6 +19,7 @@
 #import <React/RCTLinkingManager.h>
 #import <UMAnalytics/MobClick.h>
 #import <UMCommon/UMConfigure.h>
+#import "RCTHotUpdate.h"
 
 @implementation AppDelegate
 
@@ -84,9 +85,13 @@ sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
   //统计
   [MobClick setScenarioType:E_UM_NORMAL];
   
-
+#if DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-
+#else
+  // 非DEBUG情况下启用热更新
+  jsCodeLocation=[RCTHotUpdate bundleURL];
+#endif
+  
   NSDictionary *props =[NSDictionary dictionaryWithObject:@"test_value" forKey:@"key1"];
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

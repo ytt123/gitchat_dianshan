@@ -3,6 +3,8 @@ package com.anxintao;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+
+import cn.reactnative.modules.update.UpdateContext;
 import cn.reactnative.modules.update.UpdatePackage;
 import com.theweflex.react.WeChatPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -46,6 +48,12 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected String getJSMainModuleName() {
       return "index";
+    }
+
+    //添加新的方法
+    @Override
+    protected String getJSBundleFile(){
+      return UpdateContext.getBundleUrl(MainApplication.this);
     }
   };
 
