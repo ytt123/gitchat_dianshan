@@ -1,24 +1,15 @@
 package com.anxintao;
 
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class LoadActivity extends AppCompatActivity {
-
+    //初始化组件
     ProgressBar progressBar;
     TextView tv_update;
     ImageView iv_arrow;
